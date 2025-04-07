@@ -19,7 +19,7 @@ const instrument = Instrument_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Upbase.cloud - Status pages made simple"
+  title: "Upbase.cloud - Global Storage for Developers"
 };
 
 export default function RootLayout({ children }: Readonly<{

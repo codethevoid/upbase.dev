@@ -9,6 +9,9 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { ButtonLoader } from "@/components/ui/button-loader";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 const schema = z.object({
   email: z.string().email({ message: "Please enter a valid email" }),
@@ -17,6 +20,7 @@ const schema = z.object({
 
 export const RegisterClient = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
   const { handleSubmit, register, formState: { errors } } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema)
   });
@@ -29,6 +33,28 @@ export const RegisterClient = () => {
         method: "POST",
         body: JSON.stringify(data)
       });
+
+      if (!res.ok) {
+        const { error } = await res.json();
+        toast.error(error || "Something went wrong");
+        return;
+      }
+
+      // make request to sign in with same credentials
+      const signInResponse = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false
+      });
+
+      if (signInResponse?.error) {
+        toast.error("Invalid email or password");
+        return;
+      }
+
+      // push to dashboard
+      router.push("/dashboard");
+
     } catch (e) {
       console.error(e);
     } finally {
@@ -38,9 +64,9 @@ export const RegisterClient = () => {
 
   return (
     <div className="min-h-screen w-full px-4 grid place-items-center">
-      <div className="py-20 max-w-[380px] w-full space-y-4">
-        <Card className="w-full space-y-4 py-6">
-          <div>
+      <div className="py-20 max-w-[400px] w-full space-y-4">
+        <Card className="w-full space-y-4 p-6 ">
+          <div className="space-y-0.5">
             <p className="font-medium">Get started with Upbase</p>
             <p className="text-smaller text-muted-foreground">Enter your credentials to create an account</p>
           </div>

@@ -1,0 +1,1 @@
+export const sanitizeEmail = (email: string) => email.toLowerCase().trim();
