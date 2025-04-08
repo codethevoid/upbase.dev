@@ -1,8 +1,5 @@
-export const fetcher = async (url: RequestInfo, init?: RequestInit): Promise<JSON | unknown> => {
-  const res = await fetch(url, init);
-  if (!res.ok) {
-    const errorText = await res.text();
-    throw new Error(errorText);
-  }
+export const fetcher = async <T>(url: string): Promise<T> => {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Network error");
   return res.json();
 };
