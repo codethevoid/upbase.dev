@@ -11,14 +11,14 @@ import { useState } from "react";
 import { ButtonLoader } from "@/components/ui/button-loader";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react"
+import { signIn } from "next-auth/react";
 
 const schema = z.object({
   email: z.string().email({ message: "Please enter a valid email" }),
-  password: z.string().min(8, { message: "Password must be at least 8 characters" }),
-})
+  password: z.string().min(1, { message: "Please enter your password" }),
+});
 
-export const RegisterClient = () => {
+export const LoginClient = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { handleSubmit, register, formState: { errors } } = useForm<z.infer<typeof schema>>({
@@ -26,21 +26,9 @@ export const RegisterClient = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
-    console.log(data);
     setIsLoading(true);
     try {
-      const res = await fetch("/api/auth/register", {
-        method: "POST",
-        body: JSON.stringify(data),
-      });
 
-      if (!res.ok) {
-        const { error } = await res.json();
-        toast.error(error || "Something went wrong")
-        return
-      }
-
-      // make request to sign in with same credentials
       const signInResponse = await signIn("credentials", {
         email: data.email,
         password: data.password,
@@ -48,18 +36,19 @@ export const RegisterClient = () => {
       });
 
       if (signInResponse?.error) {
-        toast.error("Something went wrong")
+        toast.error("Invalid email or password");
         return;
       }
 
       // push to dashboard
       router.push("/storage");
-
     } catch (e) {
       console.error(e);
+      toast.error("Something went wrong");
     } finally {
       setIsLoading(false);
     }
+
   };
 
   return (
@@ -67,9 +56,8 @@ export const RegisterClient = () => {
       <div className="py-20 max-w-[400px] w-full space-y-4">
         <Card className="w-full space-y-4 p-6 ">
           <div className="space-y-0.5">
-            <p className="font-medium">Get started with Upbase</p>
-            <p className="text-smaller text-muted-foreground">Enter your credentials to create an
-                                                              account
+            <p className="font-medium">Sign in to your Upbase account</p>
+            <p className="text-smaller text-muted-foreground">Enter your credentials to continue
             </p>
           </div>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -82,15 +70,17 @@ export const RegisterClient = () => {
               {errors.password && <p className="text-xs text-red-500">{errors.password.message}</p>}
             </div>
             <Button className="w-full" disabled={isLoading} type="submit">
-              {isLoading ? <ButtonLoader /> : "Create account"}
+              {isLoading ? <ButtonLoader /> : "Sign in"}
             </Button>
           </form>
         </Card>
-        <p className="text-center text-smaller text-muted-foreground">Already have an account?{" "}
-          <NextLink href="/login" className="text-foreground hover:underline transition-colors">Sign
-                                                                                   in</NextLink>
+        <p className="text-center text-smaller text-muted-foreground">Don&apos; have an
+                                                                      account?{" "}
+          <NextLink
+            href="/register" className="hover:underline text-foreground transition-colors"
+          >Register</NextLink>
         </p>
       </div>
     </div>
-  )
-}
+  );
+};

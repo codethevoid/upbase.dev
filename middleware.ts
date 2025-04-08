@@ -1,14 +1,28 @@
-import { NextResponse, NextRequest } from "next/server";
-import { auth } from "@/auth";
+import { NextRequest, NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
 
-type CustomRequest = NextRequest & {
-  auth: unknown;
-}
+const protectedRoutes = ["/files", "/api-keys", "/metrics", "/settings", "/profile"];
+const authRoutes = ["/login", "/register", "/forgot-password", "/reset-password", "/verify-email"];
 
-export default auth((req: CustomRequest) => {
-  console.log(req.auth);
+export const middleware = async (req: NextRequest) => {
+  const path = req.nextUrl.pathname;
+
+  if (protectedRoutes.find((p) => path.startsWith(p))) {
+    const token = await getToken({ req, secret: process.env.AUTH_SECRET });
+    if (!token) {
+      return NextResponse.redirect(new URL("/login", req.url));
+    }
+  }
+
+  if (authRoutes.includes(path)) {
+    const token = await getToken({ req, secret: process.env.AUTH_SECRET });
+    if (token) {
+      return NextResponse.redirect(new URL("/files", req.url));
+    }
+  }
+
   return NextResponse.next();
-});
+};
 
 export const config = {
   matcher: [
@@ -19,6 +33,6 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico, sitemap.xml, robots.txt (metadata files)
      */
-    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)"
-  ]
+    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
+  ],
 };
