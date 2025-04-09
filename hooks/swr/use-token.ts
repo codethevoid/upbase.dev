@@ -2,7 +2,7 @@ import useSWR from "swr";
 import { fetcher } from "@/lib/utils/fetcher";
 
 type UseTokenResponse = {
-  user: { email: string };
+  user: { email: string; id: string };
   expires: string;
 };
 

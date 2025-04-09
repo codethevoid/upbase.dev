@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-const protectedRoutes = ["/files", "/api-keys", "/metrics", "/settings", "/profile"];
+const protectedRoutes = ["/storage", "/api-keys", "/metrics", "/settings", "/profile"];
 const authRoutes = ["/login", "/register", "/forgot-password", "/reset-password", "/verify-email"];
 
 export const middleware = async (req: NextRequest) => {
@@ -17,7 +17,7 @@ export const middleware = async (req: NextRequest) => {
   if (authRoutes.includes(path)) {
     const token = await getToken({ req, secret: process.env.AUTH_SECRET });
     if (token) {
-      return NextResponse.redirect(new URL("/files", req.url));
+      return NextResponse.redirect(new URL("/storage", req.url));
     }
   }
 
@@ -29,9 +29,9 @@ export const config = {
     /*
      * Match all request paths except for the ones starting with:
      * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico, sitemap.xml, robots.txt (metadata files)
+     * - _next/static (static storage)
+     * - _next/image (image optimization storage)
+     * - favicon.ico, sitemap.xml, robots.txt (metadata storage)
      */
     "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
   ],
