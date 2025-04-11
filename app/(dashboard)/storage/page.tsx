@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { CodeXml } from "lucide-react";
+import { CodeXml, Upload } from "lucide-react";
 import { StorageClient } from "@/app/(dashboard)/storage/client";
+import { CreateFolderDialog } from "@/components/dialogs/create-folder";
 
 export default function Storage() {
   return (
@@ -11,6 +12,11 @@ export default function Storage() {
           <Button size="sm" variant="outline">
             <CodeXml />
             <span>API</span>
+          </Button>
+          <CreateFolderDialog />
+          <Button size="sm">
+            <Upload />
+            <span>Upload</span>
           </Button>
         </div>
       </div>

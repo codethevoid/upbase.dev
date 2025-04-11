@@ -14,10 +14,10 @@ import {
 import { cn } from "@/lib/utils";
 import NextLink from "next/link";
 import {
-  ChartColumnBig,
   CircleUser,
   DatabaseZap,
   Key,
+  Link2,
   LogOut,
   Moon,
   Package,
@@ -47,11 +47,11 @@ const links = [
     href: "/invalidations",
     icon: <DatabaseZap />,
   },
-  {
-    label: "Metrics",
-    href: "/metrics",
-    icon: <ChartColumnBig />,
-  },
+  // {
+  //   label: "Metrics",
+  //   href: "/metrics",
+  //   icon: <ChartColumnBig />,
+  // },
   {
     label: "API keys",
     href: "/api-keys",
@@ -125,6 +125,13 @@ export const SidebarNav = () => {
                 >
                   <Moon className="dark:hidden" /> <Sun className="hidden dark:block" />
                   <span>Toggle theme</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <NextLink href="/">
+                    <Link2 className="rotate-45" />
+                    <span>Homepage</span>
+                  </NextLink>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onSelect={() => signOut({ redirectTo: "/login" })}>

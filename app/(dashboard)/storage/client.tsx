@@ -1,28 +1,117 @@
 "use client";
 
-import { ActionBar } from "@/app/(dashboard)/storage/action-bar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useStorage } from "@/hooks/swr/use-storage";
-import { ButtonLoader } from "@/components/ui/button-loader";
+import { useSearchParams } from "next/navigation";
+import NextLink from "next/link";
 import { Card } from "@/components/ui/card";
+import { File, Folder } from "lucide-react";
+import { formatBytes } from "@/lib/utils/format-bytes";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export type Sort = "newest" | "oldest" | "name_asc" | "name_desc" | "size_asc" | "size_desc";
+// export type Sort = "newest" | "oldest" | "name_asc" | "name_desc" | "size_asc" | "size_desc";
 
 export const StorageClient = () => {
-  const [sortBy, setSortBy] = useState<Sort>("newest");
-  const [key, setKey] = useState<string>("/");
-  const [search, setSearch] = useState<string>(""); // only search for files in the current path
-  const { storage, isLoading, error } = useStorage({ key });
+  // const [sortBy, setSortBy] = useState<Sort>("newest");
+  const searchParams = useSearchParams();
+  const key = searchParams.get("key") || "/";
+  const { objects, error, isLoading } = useStorage({ key });
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
+  // const isLoading = true;
+  console.log(key);
+
+  useEffect(() => {
+    if (!isLoading) {
+      setIsFirstLoad(false);
+    }
+  }, [isLoading]);
 
   return (
     <div className="space-y-4">
-      <ActionBar sortBy={sortBy} setSortBy={setSortBy} />
-      {isLoading ? (
-        <div className="flex h-48 w-full items-center justify-center">
-          <ButtonLoader />
-        </div>
-      ) : storage && storage.length > 0 ? (
-        <div>files</div>
+      {/*<ActionBar sortBy={sortBy} setSortBy={setSortBy} />*/}
+      {isLoading || (objects && objects.length > 0) ? (
+        <table className="w-full border-separate border-spacing-0 border-none">
+          <thead className="bg-input/30">
+            <tr>
+              <th className="text-primary border-input h-8 w-[300px] rounded-l-md border border-r-0 px-3 text-left text-xs font-medium">
+                Name
+              </th>
+              <th className="text-primary border-input h-8 w-[260px] border-y px-3 text-left text-xs font-medium">
+                Type
+              </th>
+              <th className="text-primary border-input h-8 w-[336px] border-y px-3 text-left text-xs font-medium">
+                Modified
+              </th>
+              <th className="text-primary border-input h-8 w-24 rounded-r-md border border-l-0 px-3 text-left text-xs font-medium">
+                Size
+              </th>
+            </tr>
+          </thead>
+          {isLoading && isFirstLoad ? (
+            <tbody>
+              {Array.from({ length: 10 }).map((_, index) => (
+                <tr key={index}>
+                  <td className="max-w-[300px] border-b px-3 py-3.5">
+                    <Skeleton className="h-2" />
+                  </td>
+                  <td className="max-w-[240px] border-b px-3 py-3.5">
+                    <Skeleton className="h-2" />
+                  </td>
+                  <td className="max-w-[336px] border-b px-3 py-3.5">
+                    <Skeleton className="h-2" />
+                  </td>
+                  <td className="max-w-24 border-b px-3 py-3.5">
+                    <Skeleton className="h-2" />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          ) : (
+            <tbody>
+              {objects &&
+                objects.map((object) => (
+                  <tr
+                    key={object.name}
+                    className={isLoading ? "pointer-events-none animate-pulse" : ""}
+                  >
+                    <td className="text-smaller max-w-[300px] border-b px-3 py-2.5">
+                      <div className="flex items-center gap-4">
+                        <div className="ring-offset-background flex size-[26px] shrink-0 items-center justify-center rounded-md bg-gradient-to-bl from-zinc-100 to-zinc-300 ring-1 ring-zinc-300 ring-offset-2 dark:from-zinc-500 dark:to-zinc-900 dark:ring-zinc-400">
+                          {object.storageType === "folder" ? (
+                            <Folder className="size-3.5" />
+                          ) : (
+                            <File className="size-3.5" />
+                          )}
+                        </div>
+                        <NextLink
+                          href={
+                            object.storageType === "folder"
+                              ? `/storage?${new URLSearchParams({ key: `${object.key}` }).toString()}`
+                              : `/storage/${object.id}`
+                          }
+                          className="hover:border-primary dark:hover:border-primary border-b border-dashed border-zinc-400 transition-colors dark:border-zinc-600"
+                        >
+                          {`${object.name}${object.storageType === "folder" ? "/" : ""}`}
+                        </NextLink>
+                      </div>
+                    </td>
+                    <td className="text-smaller max-w-[240px] border-b px-3 py-2.5">
+                      {object.storageType === "file" ? object.contentType?.split("/")[1] : "Folder"}
+                    </td>
+                    <td className="text-smaller max-w-[336px] border-b px-3 py-2.5">
+                      {new Date(object.updatedAt).toLocaleString(undefined, {
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                      })}
+                    </td>
+                    <td className="text-smaller max-w-24 border-b px-3 py-2.5">
+                      {object.size ? formatBytes(object.size) : "-"}
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          )}
+        </table>
       ) : (
         <Card className={"flex h-48 w-full items-center justify-center"}>
           <p>No files found</p>

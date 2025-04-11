@@ -1,12 +1,14 @@
 import { fetcher } from "@/lib/utils/fetcher";
 import useSWR from "swr";
 
-type File = {
+type StorageObject = {
   id: string;
-  path: string;
-  originalName: string;
-  size: number;
-  contentType: string;
+  name: string;
+  key: string;
+  size?: number;
+  contentType?: string;
+  storageType: "folder" | "file";
+  updatedAt: Date;
 };
 
 export const useStorage = ({ key }: { key: string }) => {
@@ -14,11 +16,12 @@ export const useStorage = ({ key }: { key: string }) => {
     key,
   });
 
-  const { data, isLoading, error } = useSWR<File[]>(
+  const { data, isLoading, error } = useSWR<StorageObject[]>(
     `/api/storage?${searchParams.toString()}`,
     fetcher,
+    { keepPreviousData: true },
   );
 
   console.log(data);
-  return { storage: data, isLoading, error };
+  return { objects: data, isLoading, error };
 };
