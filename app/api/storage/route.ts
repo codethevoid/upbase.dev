@@ -6,9 +6,15 @@ export const GET = withTeam(async ({ req, team }) => {
   const key = req.nextUrl.searchParams.get("key") || "/";
   const page = req.nextUrl.searchParams.get("page") || "1";
   const limit = 100;
-  const prefix = `/${team.id}`;
-  const fullKey = key === "/" ? `${prefix}/` : `${key}/`;
+  const prefix = `${team.id}`;
+  const fullKey = key === "/" ? `${prefix}/` : `${key}`;
   console.log(fullKey);
+
+  if (!fullKey.startsWith(prefix)) {
+    // if it does not, we will just throw an error because
+    // we dont want the user accessing other teams data
+    return NextResponse.json({ message: "Invalid base key", objects: [] }, { status: 400 });
+  }
 
   const objects = await prisma.$queryRaw`
       SELECT *

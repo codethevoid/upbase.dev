@@ -47,9 +47,24 @@ model StorageObject {
   size        Int?
   contentType String?
   storageType StorageType
-  team        Team?       @relation(fields: [teamId], references: [id])
-  teamId      String?
+  team        Team        @relation(fields: [teamId], references: [id])
+  teamId      String
+  // bucket      Bucket?     @relation(fields: [bucketId], references: [id])
+  // bucketId    String?
 }
+
+// model Bucket {
+//   id             String          @id @default(cuid())
+//   createdAt      DateTime        @default(now())
+//   updatedAt      DateTime        @updatedAt
+//   name           String
+//   s3Name         String          @unique
+//   storageObjects StorageObject[]
+//   team           Team            @relation(fields: [teamId], references: [id])
+//   teamId         String
+//
+//   @@unique([teamId, name])
+// }
 
 model ApiKey {
   id          String    @id @default(cuid())

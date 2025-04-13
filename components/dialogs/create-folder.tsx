@@ -14,38 +14,35 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
-
-const schema = z.object({
-  name: z
-    .string()
-    .min(1)
-    .max(50)
-    .regex(/^[a-zA-Z0-9-_.]+$/),
-});
+import type { FolderSchema } from "@/lib/zod";
+import { folderSchema } from "@/lib/zod";
+import { useStorage } from "@/hooks/swr/use-storage";
+import { ButtonLoader } from "@/components/ui/button-loader";
 
 export const CreateFolderDialog = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const searchParams = useSearchParams();
+  const key = searchParams.get("key") || "/";
+  const { mutate } = useStorage({ key });
   const {
     handleSubmit,
     register,
     formState: { errors },
     reset,
-  } = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
+  } = useForm<FolderSchema>({
+    resolver: zodResolver(folderSchema),
   });
 
-  const onSubmit = async (data: z.infer<typeof schema>) => {
+  const onSubmit = async (data: FolderSchema) => {
     console.log(data);
     setIsLoading(true);
-    const key = searchParams.get("key") || "/";
 
     try {
       const res = await fetch("/api/storage/folders/create", {
@@ -58,6 +55,11 @@ export const CreateFolderDialog = () => {
         toast.error(data.message);
         return;
       }
+
+      await mutate();
+      toast.success("Folder created");
+      setIsOpen(false);
+      reset();
     } catch (e) {
       console.error(e);
       toast.error("Something went wrong");
@@ -67,7 +69,13 @@ export const CreateFolderDialog = () => {
   };
 
   return (
-    <Dialog>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => {
+        setIsOpen(open);
+        if (!open) reset();
+      }}
+    >
       <DialogTrigger asChild>
         <Button size="sm">
           <Plus />
@@ -91,6 +99,7 @@ export const CreateFolderDialog = () => {
             placeholder="Folder name..."
             {...register("name")}
           />
+          {errors.name && <p className="text-[0.8rem] text-red-500">{errors.name.message}</p>}
           <p className="text-muted-foreground text-[0.8rem]">
             Can only contain letters, numbers, hyphens, underscores, and periods.
           </p>
@@ -101,8 +110,13 @@ export const CreateFolderDialog = () => {
               Cancel
             </Button>
           </DialogClose>
-          <Button size="sm" onClick={() => formRef.current?.requestSubmit()}>
-            Create folder
+          <Button
+            disabled={isLoading}
+            size="sm"
+            onClick={() => formRef.current?.requestSubmit()}
+            className="w-[110px]"
+          >
+            {isLoading ? <ButtonLoader /> : "Create folder"}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -45,7 +45,7 @@ export const POST = async (req: NextRequest) => {
         data: {
           name: "root",
           storageType: "folder",
-          key: `/${team.id}`,
+          key: `${team.id}`,
           team: { connect: { id: team.id } },
         },
       });

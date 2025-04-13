@@ -16,12 +16,12 @@ export const useStorage = ({ key }: { key: string }) => {
     key,
   });
 
-  const { data, isLoading, error } = useSWR<StorageObject[]>(
+  const { data, isLoading, error, mutate } = useSWR<StorageObject[]>(
     `/api/storage?${searchParams.toString()}`,
     fetcher,
     { keepPreviousData: true },
   );
 
   console.log(data);
-  return { objects: data, isLoading, error };
+  return { objects: data, isLoading, error, mutate };
 };
