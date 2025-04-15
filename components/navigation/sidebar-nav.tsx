@@ -13,17 +13,7 @@ import {
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 import NextLink from "next/link";
-import {
-  CircleUser,
-  DatabaseZap,
-  Key,
-  Link2,
-  LogOut,
-  Moon,
-  Package,
-  Settings,
-  Sun,
-} from "lucide-react";
+import { CircleUser, Key, Link2, LogOut, Moon, Package, Settings, Sun } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useToken } from "@/hooks/swr/use-token";
 import {
@@ -42,11 +32,11 @@ const links = [
     href: "/storage",
     icon: <Package />,
   },
-  {
-    label: "Invalidations",
-    href: "/invalidations",
-    icon: <DatabaseZap />,
-  },
+  // {
+  //   label: "Invalidations",
+  //   href: "/invalidations",
+  //   icon: <DatabaseZap />,
+  // },
   // {
   //   label: "Metrics",
   //   href: "/metrics",

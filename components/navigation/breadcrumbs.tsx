@@ -26,7 +26,7 @@ export const Breadcrumbs = () => {
 
   const { team } = useTeam();
 
-  if (path !== "/storage" && path !== "/storage/upload") return null;
+  if (!path.includes("/storage")) return null;
 
   const getKey = (item: string) => {
     const index = items.indexOf(item);

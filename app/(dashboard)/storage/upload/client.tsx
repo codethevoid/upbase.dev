@@ -56,7 +56,7 @@ export const UploadClient = () => {
 
       if (!res.ok) {
         const data = await res.json();
-        toast.error(data.error || "Something went wrong");
+        toast.error(data.message || "Something went wrong");
         setIsLoading(false);
         return;
       }
@@ -86,7 +86,9 @@ export const UploadClient = () => {
           const file = files[index];
 
           await axios.put(signedUrl, file, {
-            headers: { "Content-Type": file.type },
+            headers: {
+              "Content-Type": file.type,
+            },
             onUploadProgress: (progressEvent) => {
               const percent = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 1));
               setUploads((prev) => ({
@@ -112,6 +114,8 @@ export const UploadClient = () => {
     } catch (e) {
       console.error(e);
       toast.error("Something went wrong");
+      setIsLoading(false);
+      setIsUploading(false);
     }
   };
 

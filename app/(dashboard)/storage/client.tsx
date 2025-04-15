@@ -10,7 +10,6 @@ import { formatBytes } from "@/lib/utils/format-bytes";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { CreateFolderDialog } from "@/components/dialogs/create-folder";
-import { Checkbox } from "@/components/ui/checkbox";
 import { getFileType } from "@/lib/utils/get-file-type";
 
 // export type Sort = "newest" | "oldest" | "name_asc" | "name_desc" | "size_asc" | "size_desc";
@@ -33,10 +32,6 @@ export const StorageClient = () => {
       <div className="flex items-center justify-between gap-4">
         <h1 className="text-2xl font-semibold">Storage</h1>
         <div className="flex items-center gap-2">
-          <Button size="sm" variant="outline">
-            <CodeXml />
-            <span>API</span>
-          </Button>
           <CreateFolderDialog />
           <Button size="sm" asChild>
             <NextLink
@@ -45,6 +40,10 @@ export const StorageClient = () => {
               <Upload />
               <span>Upload</span>
             </NextLink>
+          </Button>
+          <Button size="sm" variant="outline">
+            <CodeXml />
+            <span>API</span>
           </Button>
         </div>
       </div>
@@ -97,7 +96,7 @@ export const StorageClient = () => {
                     >
                       <td className="text-smaller max-w-[300px] border-b px-3 py-2.5">
                         <div className="flex items-center gap-4">
-                          <Checkbox />
+                          {/*<Checkbox />*/}
                           <div className="ring-offset-background flex size-[26px] shrink-0 items-center justify-center rounded-md bg-gradient-to-bl from-zinc-100 to-zinc-300 ring-1 ring-zinc-300 ring-offset-2 dark:from-zinc-500 dark:to-zinc-900 dark:ring-zinc-400">
                             {object.storageType === "folder" ? (
                               <Folder className="size-3.5" />
@@ -109,7 +108,7 @@ export const StorageClient = () => {
                             href={
                               object.storageType === "folder"
                                 ? `/storage?${new URLSearchParams({ key: `${object.key}` }).toString()}`
-                                : `/storage/${object.id}`
+                                : `/storage/${object.id}?${new URLSearchParams({ key: `${object.key}` }).toString()}`
                             }
                             className="hover:border-primary dark:hover:border-primary truncate border-b border-dashed border-zinc-400 transition-colors dark:border-zinc-600"
                           >

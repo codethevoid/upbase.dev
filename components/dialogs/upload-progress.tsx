@@ -65,7 +65,7 @@ export const UploadProgress = ({
                         className="absolute top-0 left-0 -z-1 h-full bg-teal-500/10 transition-all"
                         style={{ width: `${value}%` }}
                       ></span>
-                      <span className="text-smaller max-w-32 truncate">
+                      <span className="text-smaller max-w-40 truncate">
                         {key.slice(0, key.lastIndexOf("-"))}
                       </span>
                       <span className="text-smaller">
