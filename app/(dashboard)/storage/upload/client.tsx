@@ -191,16 +191,16 @@ export const UploadClient = () => {
               <tbody>
                 {files.map((file) => (
                   <tr key={`${file.name}-${file.path}`}>
-                    <td className="text-smaller max-w-[300px] truncate border-b px-3 py-2.5 text-left">
+                    <td className="max-w-[300px] truncate border-b px-3 py-2.5 text-left text-sm">
                       {file.name}
                     </td>
-                    <td className="text-smaller max-w-[240px] truncate border-b px-3 py-2.5 text-left">
+                    <td className="max-w-[240px] truncate border-b px-3 py-2.5 text-left text-sm">
                       {getPath(file.path, file.name)}
                     </td>
-                    <td className="text-smaller max-w-[336px] border-b px-3 py-2.5 text-left">
+                    <td className="max-w-[336px] border-b px-3 py-2.5 text-left text-sm">
                       {getFileType(file)}
                     </td>
-                    <td className="text-smaller w-24 border-b px-3 py-2.5 text-left">
+                    <td className="w-24 border-b px-3 py-2.5 text-left text-sm">
                       {formatBytes(file.size)}
                     </td>
                   </tr>

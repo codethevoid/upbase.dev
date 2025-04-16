@@ -3,7 +3,7 @@ import { z } from "zod";
 export const folderSchema = z.object({
   name: z
     .string()
-    .min(1)
+    .min(1, { message: "Please provide a folder name" })
     .max(50, { message: "Folder name must be at most 50 characters long" })
     .regex(/^[a-zA-Z0-9-_.]+$/, { message: "Invalid folder name" })
     .describe(
@@ -12,3 +12,14 @@ export const folderSchema = z.object({
 });
 
 export type FolderSchema = z.infer<typeof folderSchema>;
+
+// api key schema
+export const apiKeySchema = z.object({
+  name: z
+    .string()
+    .min(1, { message: "Please provide a key name" })
+    .max(50, { message: "Key name must be at most 50 characters long" }),
+  origins: z.string().regex(/^\S*$/, { message: "No spaces allowed" }).optional(),
+});
+
+export type ApiKeySchema = z.infer<typeof apiKeySchema>;

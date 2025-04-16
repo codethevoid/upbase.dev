@@ -4,6 +4,8 @@ import { upbaseError } from "@/lib/utils/upbase-error";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { s3Client } from "@/lib/s3/client";
+import prisma from "@/db/prisma";
+import { FREE_PLAN_FILE_SIZE_LIMIT, FREE_PLAN_STORAGE_LIMIT } from "@/lib/utils/limits";
 
 type PresignedUrlsRequest = {
   files: {
@@ -42,19 +44,29 @@ export const POST = withTeam(async ({ req, team }) => {
       return upbaseError("Files information is required", 400);
     }
 
-    console.log(baseKey);
-
     if (!baseKey || !baseKey.endsWith("/") || !baseKey.startsWith(`${team.id}/`)) {
       return upbaseError("Base key is either invalid or not provided", 400);
     }
 
     // make sure no files are larger than 1GB
-    const maxSize = 1024 * 1024 * 1024; // 1GB
+    const maxSize = FREE_PLAN_FILE_SIZE_LIMIT; // 1GB
     files.forEach((file) => {
       if (file.size > maxSize) {
         return upbaseError(`File ${file.name} is larger than 1GB`, 400);
       }
     });
+
+    // get total size of all files
+    const totalSize = files.reduce((acc, file) => acc + file.size, 0);
+    // get total size the team has used
+    const storageObjects = await prisma.storageObject.aggregate({
+      where: { teamId: team.id },
+      _sum: { size: true },
+    });
+
+    if ((storageObjects?._sum?.size || 0) + totalSize > FREE_PLAN_STORAGE_LIMIT) {
+      return upbaseError("You have exceeded your storage limit of 5GB", 400);
+    }
 
     // generate file keys
     // replace spaces with underscores

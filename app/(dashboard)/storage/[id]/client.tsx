@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { UpbaseErrorResponse } from "@/types";
 
 export const StorageObjectClient = ({ id }: { id: string }) => {
   const { storageObject, isLoading, error } = useObject(id);
@@ -87,7 +88,7 @@ export const StorageObjectClient = ({ id }: { id: string }) => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onSelect={() => setOpen(true)}>
+                <DropdownMenuItem onSelect={() => setOpen(true)} variant="destructive">
                   <Trash />
                   Delete object
                 </DropdownMenuItem>
@@ -177,8 +178,8 @@ export const StorageObjectClient = ({ id }: { id: string }) => {
                   });
 
                   if (!res.ok) {
-                    const data = await res.json();
-                    toast.error(data.error || "Failed to delete object");
+                    const data = (await res.json()) as UpbaseErrorResponse;
+                    toast.error(data.message || "Failed to delete object");
                     return;
                   }
 

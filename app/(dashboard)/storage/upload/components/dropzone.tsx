@@ -1,6 +1,8 @@
 import { Dispatch, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { FileWithPath } from "@/types";
+import { FREE_PLAN_FILE_SIZE_LIMIT } from "@/lib/utils/limits";
+import { toast } from "sonner";
 
 export const Dropzone = ({ setFiles }: { setFiles: Dispatch<FileWithPath[]> }) => {
   const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
@@ -13,8 +15,8 @@ export const Dropzone = ({ setFiles }: { setFiles: Dispatch<FileWithPath[]> }) =
     onDrop,
     maxFiles: 100,
     // multiple: false,
-    onDropRejected: () => console.log("file rejected"),
-    maxSize: 1024 * 1024 * 1024, // 1GB
+    onDropRejected: () => toast.error("Failed to upload files."),
+    maxSize: FREE_PLAN_FILE_SIZE_LIMIT, // 1GB
   });
 
   return (

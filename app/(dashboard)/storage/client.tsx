@@ -94,7 +94,7 @@ export const StorageClient = () => {
                       key={object.name}
                       className={isLoading ? "pointer-events-none animate-pulse" : ""}
                     >
-                      <td className="text-smaller max-w-[300px] border-b px-3 py-2.5">
+                      <td className="max-w-[300px] border-b px-3 py-2.5 text-sm">
                         <div className="flex items-center gap-4">
                           {/*<Checkbox />*/}
                           <div className="ring-offset-background flex size-[26px] shrink-0 items-center justify-center rounded-md bg-gradient-to-bl from-zinc-100 to-zinc-300 ring-1 ring-zinc-300 ring-offset-2 dark:from-zinc-500 dark:to-zinc-900 dark:ring-zinc-400">
@@ -107,8 +107,8 @@ export const StorageClient = () => {
                           <NextLink
                             href={
                               object.storageType === "folder"
-                                ? `/storage?${new URLSearchParams({ key: `${object.key}` }).toString()}`
-                                : `/storage/${object.id}?${new URLSearchParams({ key: `${object.key}` }).toString()}`
+                                ? `/storage?${new URLSearchParams({ key: object.key }).toString()}`
+                                : `/storage/${object.id}?${new URLSearchParams({ key: object.key }).toString()}`
                             }
                             className="hover:border-primary dark:hover:border-primary truncate border-b border-dashed border-zinc-400 transition-colors dark:border-zinc-600"
                           >
@@ -116,7 +116,7 @@ export const StorageClient = () => {
                           </NextLink>
                         </div>
                       </td>
-                      <td className="text-smaller max-w-[240px] border-b px-3 py-2.5">
+                      <td className="max-w-[240px] border-b px-3 py-2.5 text-sm">
                         {object.storageType === "file"
                           ? getFileType({
                               name: object.name,
@@ -124,13 +124,13 @@ export const StorageClient = () => {
                             })
                           : "Folder"}
                       </td>
-                      <td className="text-smaller max-w-[336px] border-b px-3 py-2.5">
+                      <td className="max-w-[336px] border-b px-3 py-2.5 text-sm">
                         {new Date(object.updatedAt).toLocaleString(undefined, {
                           dateStyle: "medium",
                           timeStyle: "short",
                         })}
                       </td>
-                      <td className="text-smaller max-w-24 border-b px-3 py-2.5">
+                      <td className="max-w-24 border-b px-3 py-2.5 text-sm">
                         {object.size ? formatBytes(object.size) : "-"}
                       </td>
                     </tr>

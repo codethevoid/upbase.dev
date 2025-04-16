@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { after, NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import prisma from "@/db/prisma";
 import { upbaseError } from "@/lib/utils/upbase-error";
@@ -25,24 +25,35 @@ export const withTeam = (handler: WithTeamHandler) => {
       if (!session) {
         // check for Bearer token in the request headers
         // this is for API key authentication if the user is using the API instead of the web app
-        const token = req.headers.get("Authorization")?.split(" ")[1];
-        if (!token) return upbaseError("No API key provided.", 401);
+        const secretKey = req.headers.get("Authorization")?.split(" ")[1];
+        const publicKey = req.headers.get("x-api-key");
+        if (!secretKey && !publicKey) return upbaseError("No API key provided.", 401);
 
-        // need to add logic to look up api key and get team id
-        const key = await prisma.apiKey.findUnique({
-          where: { key: token },
-          select: { teamId: true, expires: true },
+        const key = await prisma.apiKey.findFirst({
+          where: {
+            ...(publicKey && { publicKey }),
+            ...(secretKey && { secretKey }),
+          },
+          select: { teamId: true, origins: true, id: true },
         });
 
         if (!key) return upbaseError("Invalid API key.", 401);
 
-        // make sure key is not expired
-        const now = new Date();
-        if (key.expires) {
-          if (new Date(key.expires).getTime() < now.getTime()) {
-            return upbaseError("API key has expired.", 401);
-          }
+        if (publicKey) {
+          // check if the domain is authorized
+          const origin = req.headers.get("origin");
+          if (!origin) return upbaseError("No origin present.", 401);
+          const isAuthorized = key.origins.some((o) => o === origin);
+          if (!isAuthorized) return upbaseError("Origin not authorized.", 401);
         }
+
+        // update api key last used data
+        after(async () => {
+          await prisma.apiKey.update({
+            where: { id: key.id },
+            data: { lastUsedAt: new Date() },
+          });
+        });
 
         // continue to handler with the team id
         return handler({ req, params, team: { id: key.teamId } });

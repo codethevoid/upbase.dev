@@ -98,6 +98,7 @@ export const CreateFolderDialog = () => {
             id="folder-name"
             placeholder="Folder name..."
             {...register("name")}
+            className="h-8"
           />
           {errors.name && <p className="text-[0.8rem] text-red-500">{errors.name.message}</p>}
           <p className="text-muted-foreground text-[0.8rem]">
