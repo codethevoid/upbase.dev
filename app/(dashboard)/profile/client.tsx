@@ -37,7 +37,7 @@ export const ProfileClient = () => {
             </div>
             <Input
               id="name"
-              className="h-8 max-w-sm"
+              className="max-w-sm"
               placeholder="Email"
               readOnly
               value={token?.user?.email || ""}

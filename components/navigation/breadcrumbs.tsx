@@ -34,14 +34,16 @@ export const Breadcrumbs = () => {
   };
 
   return (
-    <nav>
-      <div className="flex items-center gap-1.5">
-        <NextLink
-          href="/storage"
-          className="hover:text-foreground text-smaller text-muted-foreground transition-colors"
-        >
-          storage
-        </NextLink>
+    <nav className="min-w-0 max-md:hidden">
+      <div className="flex min-w-0 shrink items-center gap-1.5">
+        {items.length > 0 && (
+          <NextLink
+            href="/storage"
+            className="hover:text-foreground text-smaller text-muted-foreground transition-colors"
+          >
+            storage
+          </NextLink>
+        )}
 
         {items.length > 0 && <span className="text-muted-foreground text-sm">/</span>}
         {items.length >= ITEMS_TO_DISPLAY ? (
@@ -69,19 +71,19 @@ export const Breadcrumbs = () => {
           </>
         ) : null}
         {items.slice(-ITEMS_TO_DISPLAY + 1).map((item, index) => (
-          <div key={index} className="flex items-center gap-1.5">
+          <div key={index} className="flex min-w-0 items-center gap-1.5">
             {index !== items.slice(-ITEMS_TO_DISPLAY + 1).length - 1 ? (
               <>
                 <NextLink
                   href={`/storage?${new URLSearchParams({ key: getKey(item) }).toString()}`}
-                  className="text-muted-foreground text-smaller hover:text-foreground transition-colors"
+                  className="text-muted-foreground text-smaller hover:text-foreground min-w-0 truncate transition-colors"
                 >
                   {item}
                 </NextLink>
                 <span className="text-muted-foreground text-sm">/</span>
               </>
             ) : (
-              <p className="text-smaller truncate">{item}</p>
+              <p className="text-smaller min-w-0 truncate">{item}</p>
             )}
           </div>
         ))}

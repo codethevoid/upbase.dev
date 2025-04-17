@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { withTeam } from "@/lib/auth/with-team";
-import { upbaseError } from "@/lib/utils/upbase-error";
+import { restashError } from "@/lib/utils/restash-error";
 import prisma from "@/db/prisma";
 
 export const GET = withTeam(async ({ team, params }) => {
@@ -20,7 +20,7 @@ export const GET = withTeam(async ({ team, params }) => {
       },
     });
 
-    if (!key) return upbaseError("API key not found", 404);
+    if (!key) return restashError("API key not found", 404);
 
     const { secretKey, ...rest } = key;
 
@@ -30,6 +30,6 @@ export const GET = withTeam(async ({ team, params }) => {
     });
   } catch (e) {
     console.error(e);
-    return upbaseError("Failed to get API key", 500);
+    return restashError("Failed to get API key", 500);
   }
 });

@@ -1,5 +1,5 @@
 import { withTeam } from "@/lib/auth/with-team";
-import { upbaseError } from "@/lib/utils/upbase-error";
+import { restashError } from "@/lib/utils/restash-error";
 import prisma from "@/db/prisma";
 import { NextResponse } from "next/server";
 
@@ -20,6 +20,6 @@ export const GET = withTeam(async ({ team }) => {
     );
   } catch (e) {
     console.error(e);
-    return upbaseError("Failed to get API keys", 500);
+    return restashError("Failed to get API keys", 500);
   }
 });

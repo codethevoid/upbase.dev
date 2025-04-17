@@ -2,7 +2,7 @@ export type FileWithPath = File & {
   path?: string;
 };
 
-export type UpbaseErrorResponse = {
+export type RestashErrorResponse = {
   message: string;
   timestamp: string;
   success: false;

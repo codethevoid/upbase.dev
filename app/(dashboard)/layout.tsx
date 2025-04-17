@@ -6,7 +6,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <SidebarProvider>
       <SidebarNav />
-      <div className="flex-1">
+      <div className="max-w-full min-w-0 flex-1">
         <DashboardNav />
         <main className="mx-auto max-w-screen-lg px-4 py-8">{children}</main>
       </div>

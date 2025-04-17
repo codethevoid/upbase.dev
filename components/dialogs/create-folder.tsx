@@ -17,20 +17,20 @@ import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import type { FolderSchema } from "@/lib/zod";
 import { folderSchema } from "@/lib/zod";
 import { useStorage } from "@/hooks/swr/use-storage";
 import { ButtonLoader } from "@/components/ui/button-loader";
+import { useSearchParams } from "next/navigation";
 
-export const CreateFolderDialog = () => {
+export const CreateFolderDialog = ({ page, limit }: { page: number; limit: number }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const searchParams = useSearchParams();
   const key = searchParams.get("key") || "/";
-  const { mutate } = useStorage({ key });
+  const { mutate } = useStorage({ key, page, limit });
   const {
     handleSubmit,
     register,
@@ -98,7 +98,6 @@ export const CreateFolderDialog = () => {
             id="folder-name"
             placeholder="Folder name..."
             {...register("name")}
-            className="h-8"
           />
           {errors.name && <p className="text-[0.8rem] text-red-500">{errors.name.message}</p>}
           <p className="text-muted-foreground text-[0.8rem]">

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { withTeam } from "@/lib/auth/with-team";
 import prisma from "@/db/prisma";
-import { upbaseError } from "@/lib/utils/upbase-error";
+import { restashError } from "@/lib/utils/restash-error";
 
 export const GET = withTeam(async ({ params, team }) => {
   const { id } = await params;
@@ -10,11 +10,11 @@ export const GET = withTeam(async ({ params, team }) => {
   });
 
   if (!object) {
-    return upbaseError("Object not found", 404);
+    return restashError("Object not found", 404);
   }
 
   if (object.storageType === "folder") {
-    return upbaseError("Object is a folder", 400);
+    return restashError("Object is a folder", 400);
   }
 
   return NextResponse.json(object);

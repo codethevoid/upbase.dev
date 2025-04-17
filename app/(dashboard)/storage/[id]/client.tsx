@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { UpbaseErrorResponse } from "@/types";
+import { RestashErrorResponse } from "@/types";
 
 export const StorageObjectClient = ({ id }: { id: string }) => {
   const { storageObject, isLoading, error } = useObject(id);
@@ -100,7 +100,7 @@ export const StorageObjectClient = ({ id }: { id: string }) => {
         <Card className="space-y-4 shadow-none">
           <div className="space-y-0.5">
             <p className="text-sm font-medium">Last modified</p>
-            <p className="text-muted-foreground text-smaller">
+            <p className="text-muted-foreground text-sm">
               {new Date(storageObject.updatedAt).toLocaleString(undefined, {
                 dateStyle: "long",
                 timeStyle: "short",
@@ -109,11 +109,11 @@ export const StorageObjectClient = ({ id }: { id: string }) => {
           </div>
           <div className="space-y-0.5">
             <p className="text-sm font-medium">Size</p>
-            <p className="text-muted-foreground text-smaller">{formatBytes(storageObject.size)}</p>
+            <p className="text-muted-foreground text-sm">{formatBytes(storageObject.size)}</p>
           </div>
           <div className="space-y-0.5">
             <p className="text-sm font-medium">Content type</p>
-            <p className="text-muted-foreground text-smaller">{storageObject.contentType}</p>
+            <p className="text-muted-foreground text-sm">{storageObject.contentType}</p>
           </div>
           <div className="space-y-0.5">
             <p className="text-sm font-medium">Key</p>
@@ -126,7 +126,7 @@ export const StorageObjectClient = ({ id }: { id: string }) => {
                   toast.success("Copied to clipboard");
                 }}
               />
-              <p className="text-muted-foreground text-smaller break-all">{storageObject.key}</p>
+              <p className="text-muted-foreground text-sm break-all">{storageObject.key}</p>
             </div>
           </div>
           <div className="space-y-0.5">
@@ -144,7 +144,7 @@ export const StorageObjectClient = ({ id }: { id: string }) => {
               />
               <a
                 href={`${process.env.NEXT_PUBLIC_CDN_BASE_URL}/${storageObject.key}`}
-                className="text-smaller hover:text-foreground text-muted-foreground break-all transition-colors hover:underline"
+                className="hover:text-foreground text-muted-foreground text-sm break-all transition-colors hover:underline"
                 target="_blank"
               >
                 {`${process.env.NEXT_PUBLIC_CDN_BASE_URL}/${encodeURIComponent(storageObject.key)}`}
@@ -178,7 +178,7 @@ export const StorageObjectClient = ({ id }: { id: string }) => {
                   });
 
                   if (!res.ok) {
-                    const data = (await res.json()) as UpbaseErrorResponse;
+                    const data = (await res.json()) as RestashErrorResponse;
                     toast.error(data.message || "Failed to delete object");
                     return;
                   }

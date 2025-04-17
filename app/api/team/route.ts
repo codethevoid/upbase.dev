@@ -1,7 +1,7 @@
 import { withTeam } from "@/lib/auth/with-team";
 import { NextResponse } from "next/server";
 import prisma from "@/db/prisma";
-import { upbaseError } from "@/lib/utils/upbase-error";
+import { restashError } from "@/lib/utils/restash-error";
 
 export const GET = withTeam(async ({ team }) => {
   const teamInfo = await prisma.team.findUnique({
@@ -9,7 +9,7 @@ export const GET = withTeam(async ({ team }) => {
     select: { name: true, storageObjects: { select: { size: true, storageType: true } } },
   });
 
-  if (!teamInfo) return upbaseError("Team not found", 404);
+  if (!teamInfo) return restashError("Team not found", 404);
 
   const usage = teamInfo.storageObjects.reduce((acc, obj) => acc + ((obj.size as number) || 0), 0);
 

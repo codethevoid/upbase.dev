@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { useEffect, useRef, useState } from "react";
 import { ButtonLoader } from "@/components/ui/button-loader";
 import { Button } from "@/components/ui/button";
-import { UpbaseErrorResponse } from "@/types";
+import { RestashErrorResponse } from "@/types";
 import { toast } from "sonner";
 import { formatBytes } from "@/lib/utils/format-bytes";
 import {
@@ -53,7 +53,7 @@ export const TeamSettingsClient = () => {
       });
 
       if (!res.ok) {
-        const data: UpbaseErrorResponse = await res.json();
+        const data: RestashErrorResponse = await res.json();
         toast.error(data.message);
         return;
       }
@@ -98,12 +98,7 @@ export const TeamSettingsClient = () => {
             <div>
               <Label htmlFor="name">Team name</Label>
             </div>
-            <Input
-              id="name"
-              className="h-8 max-w-sm"
-              placeholder="Team name"
-              {...register("name")}
-            />
+            <Input id="name" className="max-w-sm" placeholder="Team name" {...register("name")} />
           </form>
         </div>
         <div className="flex items-center justify-between border-t px-4 py-3">
@@ -121,7 +116,7 @@ export const TeamSettingsClient = () => {
       <Card className="overflow-hidden p-0">
         <div className="border-b px-4 py-3 font-medium">Usage</div>
         <div className="px-4 py-6">
-          <p className="text-lg font-bold">
+          <p className="text-lg font-semibold">
             {formatBytes(team.usage || 0)} / {formatBytes(FREE_PLAN_STORAGE_LIMIT)}
           </p>
         </div>

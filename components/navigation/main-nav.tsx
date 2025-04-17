@@ -11,7 +11,7 @@ export const MainNav = () => {
     <nav className={"sticky top-0 px-4 py-2.5"}>
       <div className={"mx-auto flex max-w-screen-lg items-center justify-between"}>
         <NextLink href={"/"} className={"text-lg font-semibold"}>
-          upbase
+          restash
         </NextLink>
         <div className={"flex items-center gap-2"}>
           {isLoading ? (

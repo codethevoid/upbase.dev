@@ -135,8 +135,8 @@ export const UploadClient = () => {
           <Card className="space-y-4 shadow-none">
             <div className="space-y-0.5">
               <p className="text-sm font-medium">Destination</p>
-              <p className="text-muted-foreground text-smaller">
-                Add folders and files to upload to Upbase. They will be uploaded to the current
+              <p className="text-muted-foreground text-sm">
+                Add folders and files to upload to Restash. They will be uploaded to the current
                 directory.
               </p>
             </div>
@@ -146,8 +146,8 @@ export const UploadClient = () => {
                 target="_blank"
                 className="flex items-center gap-2 text-sm underline"
               >
-                <Link2 className="text-muted-foreground size-4" />
-                <span>storage/</span>
+                <Link2 className="text-muted-foreground size-4 shrink-0" />
+                <span className="break-all">storage/</span>
               </a>
             ) : (
               <>
@@ -160,64 +160,68 @@ export const UploadClient = () => {
                   <a
                     target="_blank"
                     href={`/storage?${new URLSearchParams({ key })}`}
-                    className="text-smaller flex items-center gap-2 underline"
+                    className="flex items-center gap-2 text-sm underline"
                   >
-                    <Link2 className="text-muted-foreground size-4" />
-                    <span>storage/{key.replace(`/${team?.id}/`, "")}</span>
+                    <Link2 className="text-muted-foreground size-4 shrink-0" />
+                    <span className="break-all">storage/{key.replace(`/${team?.id}/`, "")}</span>
                   </a>
                 )}
               </>
             )}
           </Card>
           <Dropzone setFiles={setFiles} />
-          <table className="w-full border-separate border-spacing-0 border-none">
-            <thead className="bg-input/30">
-              <tr>
-                <th className="text-primary border-input h-8 w-[300px] rounded-l-md border border-r-0 px-3 text-left text-xs font-medium">
-                  Name
-                </th>
-                <th className="text-primary border-input h-8 w-[260px] border-y px-3 text-left text-xs font-medium">
-                  Subfolder
-                </th>
-                <th className="text-primary border-input h-8 w-[336px] border-y px-3 text-left text-xs font-medium">
-                  Type
-                </th>
-                <th className="text-primary border-input h-8 w-24 rounded-r-md border border-l-0 px-3 text-left text-xs font-medium">
-                  Size
-                </th>
-              </tr>
-            </thead>
-            {files.length > 0 && (
-              <tbody>
-                {files.map((file) => (
-                  <tr key={`${file.name}-${file.path}`}>
-                    <td className="max-w-[300px] truncate border-b px-3 py-2.5 text-left text-sm">
-                      {file.name}
-                    </td>
-                    <td className="max-w-[240px] truncate border-b px-3 py-2.5 text-left text-sm">
-                      {getPath(file.path, file.name)}
-                    </td>
-                    <td className="max-w-[336px] border-b px-3 py-2.5 text-left text-sm">
-                      {getFileType(file)}
-                    </td>
-                    <td className="w-24 border-b px-3 py-2.5 text-left text-sm">
-                      {formatBytes(file.size)}
-                    </td>
+          {files.length > 0 && (
+            <div className="max-w-full overflow-x-auto">
+              <table className="w-full border-separate border-spacing-0 border-none whitespace-nowrap">
+                <thead className="bg-input/30">
+                  <tr>
+                    <th className="text-primary border-input h-8 w-[300px] rounded-l-md border border-r-0 px-3 text-left text-xs font-medium">
+                      Name
+                    </th>
+                    <th className="text-primary border-input h-8 w-[260px] border-y px-3 text-left text-xs font-medium">
+                      Subfolder
+                    </th>
+                    <th className="text-primary border-input h-8 w-[336px] border-y px-3 text-left text-xs font-medium">
+                      Type
+                    </th>
+                    <th className="text-primary border-input h-8 w-24 rounded-r-md border border-l-0 px-3 text-left text-xs font-medium">
+                      Size
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            )}
-          </table>
-          {files.length === 0 && (
-            <div className="flex h-24 items-center justify-center">
-              <div className="space-y-0.5">
-                <p className="text-center text-sm font-medium">No folders or files selected.</p>
-                <p className="text-smaller text-muted-foreground">
-                  You have not selected any folders or files to upload.
-                </p>
-              </div>
+                </thead>
+                {files.length > 0 && (
+                  <tbody>
+                    {files.map((file) => (
+                      <tr key={`${file.name}-${file.path}`}>
+                        <td className="max-w-[300px] truncate border-b px-3 py-2.5 text-left text-sm">
+                          {file.name}
+                        </td>
+                        <td className="max-w-[240px] truncate border-b px-3 py-2.5 text-left text-sm">
+                          {getPath(file.path, file.name)}
+                        </td>
+                        <td className="max-w-[336px] border-b px-3 py-2.5 text-left text-sm">
+                          {getFileType(file)}
+                        </td>
+                        <td className="w-24 border-b px-3 py-2.5 text-left text-sm">
+                          {formatBytes(file.size)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                )}
+              </table>
             </div>
           )}
+          {/*{files.length === 0 && (*/}
+          {/*  <div className="flex h-24 items-center justify-center">*/}
+          {/*    <div className="space-y-0.5">*/}
+          {/*      <p className="text-center text-sm font-medium">No folders or files selected.</p>*/}
+          {/*      <p className="text-smaller text-muted-foreground">*/}
+          {/*        You have not selected any folders or files to upload.*/}
+          {/*      </p>*/}
+          {/*    </div>*/}
+          {/*  </div>*/}
+          {/*)}*/}
           {files.length > 0 && (
             <div className="flex items-center justify-end gap-2">
               <Button size="sm" variant="ghost" asChild>

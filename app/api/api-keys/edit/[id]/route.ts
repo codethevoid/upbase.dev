@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { withTeam } from "@/lib/auth/with-team";
-import { upbaseError } from "@/lib/utils/upbase-error";
+import { restashError } from "@/lib/utils/restash-error";
 import { apiKeySchema } from "@/lib/zod";
 import prisma from "@/db/prisma";
 
@@ -15,7 +15,7 @@ export const PATCH = withTeam(async ({ req, team, params }) => {
     const { id } = await params;
 
     if (apiKeySchema.safeParse({ name, origins }).error) {
-      return upbaseError("Invalid request", 400);
+      return restashError("Invalid request", 400);
     }
 
     const exists = await prisma.apiKey.findFirst({
@@ -23,7 +23,7 @@ export const PATCH = withTeam(async ({ req, team, params }) => {
     });
 
     if (exists) {
-      return upbaseError("API key with this name already exists", 400);
+      return restashError("API key with this name already exists", 400);
     }
 
     await prisma.apiKey.update({
@@ -37,6 +37,6 @@ export const PATCH = withTeam(async ({ req, team, params }) => {
     return NextResponse.json({ message: "API key edited" }, { status: 200 });
   } catch (e) {
     console.error(e);
-    return upbaseError("Failed to create API key", 500);
+    return restashError("Failed to create API key", 500);
   }
 });

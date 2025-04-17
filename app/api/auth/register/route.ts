@@ -3,6 +3,7 @@ import { z } from "zod";
 import prisma from "@/db/prisma";
 import bcrypt from "bcrypt";
 import { sanitizeEmail } from "@/lib/utils/santiize-email";
+import { restashError } from "@/lib/utils/restash-error";
 
 const schema = z.object({
   email: z.string().email(),
@@ -16,14 +17,11 @@ export const POST = async (req: NextRequest) => {
 
     const { error } = schema.safeParse({ email, password });
     if (error) {
-      return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+      return restashError("Invalid request", 400);
     }
 
     if (await prisma.user.findUnique({ where: { email: sanitizeEmail(email) } })) {
-      return NextResponse.json(
-        { error: "An account with this email already exists" },
-        { status: 400 },
-      );
+      return restashError("User already exists", 400);
     }
 
     await prisma.$transaction(async () => {
@@ -54,6 +52,6 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json({ message: "Account created successfully" });
   } catch (e) {
     console.error(e);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return restashError("Failed to create account", 500);
   }
 };

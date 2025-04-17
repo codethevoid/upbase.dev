@@ -1,27 +1,32 @@
 import { fetcher } from "@/lib/utils/fetcher";
 import useSWR from "swr";
 
-type StorageObject = {
-  id: string;
-  name: string;
-  key: string;
-  size?: number;
-  contentType?: string;
-  storageType: "folder" | "file";
-  updatedAt: Date;
+type UseStorageResponse = {
+  objects: {
+    id: string;
+    name: string;
+    key: string;
+    size?: number;
+    contentType?: string;
+    storageType: "folder" | "file";
+    updatedAt: Date;
+  }[];
+  total: number;
 };
 
-export const useStorage = ({ key }: { key: string }) => {
+export const useStorage = ({ key, page, limit }: { key: string; page: number; limit: number }) => {
   const searchParams = new URLSearchParams({
     key,
+    page: page.toString(),
+    limit: limit.toString(),
   });
 
-  const { data, isLoading, error, mutate } = useSWR<StorageObject[]>(
+  const { data, isLoading, error, mutate } = useSWR<UseStorageResponse>(
     `/api/storage?${searchParams.toString()}`,
     fetcher,
     { keepPreviousData: true },
   );
 
   console.log(data);
-  return { objects: data, isLoading, error, mutate };
+  return { objects: data?.objects, total: data?.total, isLoading, error, mutate };
 };

@@ -7,7 +7,5 @@ export const Card = ({
   children: React.ReactNode;
   className?: string;
 }) => {
-  return (
-    <div className={cn("bg-input/10 rounded-lg border p-4 shadow-xs", className)}>{children}</div>
-  );
+  return <div className={cn("bg-input/10 rounded-lg border p-4", className)}>{children}</div>;
 };

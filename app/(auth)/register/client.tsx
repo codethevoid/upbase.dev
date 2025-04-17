@@ -11,17 +11,21 @@ import { useState } from "react";
 import { ButtonLoader } from "@/components/ui/button-loader";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react"
+import { signIn } from "next-auth/react";
 
 const schema = z.object({
   email: z.string().email({ message: "Please enter a valid email" }),
   password: z.string().min(8, { message: "Password must be at least 8 characters" }),
-})
+});
 
 export const RegisterClient = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { handleSubmit, register, formState: { errors } } = useForm<z.infer<typeof schema>>({
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
 
@@ -35,9 +39,9 @@ export const RegisterClient = () => {
       });
 
       if (!res.ok) {
-        const { error } = await res.json();
-        toast.error(error || "Something went wrong")
-        return
+        const { message } = await res.json();
+        toast.error(message || "Something went wrong");
+        return;
       }
 
       // make request to sign in with same credentials
@@ -48,13 +52,12 @@ export const RegisterClient = () => {
       });
 
       if (signInResponse?.error) {
-        toast.error("Something went wrong")
+        toast.error("Something went wrong");
         return;
       }
 
       // push to dashboard
       router.push("/storage");
-
     } catch (e) {
       console.error(e);
     } finally {
@@ -63,13 +66,13 @@ export const RegisterClient = () => {
   };
 
   return (
-    <div className="min-h-screen w-full px-4 grid place-items-center">
-      <div className="py-20 max-w-[400px] w-full space-y-4">
-        <Card className="w-full space-y-4 p-6 ">
+    <div className="grid min-h-screen w-full place-items-center px-4">
+      <div className="w-full max-w-[400px] space-y-4 py-20">
+        <Card className="w-full space-y-4 p-6">
           <div className="space-y-0.5">
-            <p className="font-medium">Get started with Upbase</p>
-            <p className="text-smaller text-muted-foreground">Enter your credentials to create an
-                                                              account
+            <p className="font-medium">Get started with Restash</p>
+            <p className="text-smaller text-muted-foreground">
+              Enter your credentials to create an account
             </p>
           </div>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -86,11 +89,13 @@ export const RegisterClient = () => {
             </Button>
           </form>
         </Card>
-        <p className="text-center text-smaller text-muted-foreground">Already have an account?{" "}
-          <NextLink href="/login" className="text-foreground hover:underline transition-colors">Sign
-                                                                                   in</NextLink>
+        <p className="text-smaller text-muted-foreground text-center">
+          Already have an account?{" "}
+          <NextLink href="/login" className="text-foreground transition-colors hover:underline">
+            Sign in
+          </NextLink>
         </p>
       </div>
     </div>
-  )
-}
+  );
+};

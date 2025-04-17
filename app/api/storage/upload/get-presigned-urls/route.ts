@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { withTeam } from "@/lib/auth/with-team";
-import { upbaseError } from "@/lib/utils/upbase-error";
+import { restashError } from "@/lib/utils/restash-error";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { s3Client } from "@/lib/s3/client";
@@ -41,18 +41,18 @@ export const POST = withTeam(async ({ req, team }) => {
     }
 
     if (!files || files.length === 0 || !Array.isArray(files)) {
-      return upbaseError("Files information is required", 400);
+      return restashError("Files information is required", 400);
     }
 
     if (!baseKey || !baseKey.endsWith("/") || !baseKey.startsWith(`${team.id}/`)) {
-      return upbaseError("Base key is either invalid or not provided", 400);
+      return restashError("Base key is either invalid or not provided", 400);
     }
 
     // make sure no files are larger than 1GB
     const maxSize = FREE_PLAN_FILE_SIZE_LIMIT; // 1GB
     files.forEach((file) => {
       if (file.size > maxSize) {
-        return upbaseError(`File ${file.name} is larger than 1GB`, 400);
+        return restashError(`File ${file.name} is larger than 1GB`, 400);
       }
     });
 
@@ -65,7 +65,7 @@ export const POST = withTeam(async ({ req, team }) => {
     });
 
     if ((storageObjects?._sum?.size || 0) + totalSize > FREE_PLAN_STORAGE_LIMIT) {
-      return upbaseError("You have exceeded your storage limit of 5GB", 400);
+      return restashError("You have exceeded your storage limit of 5GB", 400);
     }
 
     // generate file keys
@@ -97,6 +97,6 @@ export const POST = withTeam(async ({ req, team }) => {
     return NextResponse.json(presignedUrls);
   } catch (e) {
     console.error(e);
-    return upbaseError("Something went wrong", 500);
+    return restashError("Something went wrong", 500);
   }
 });

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { upbaseError } from "@/lib/utils/upbase-error";
+import { restashError } from "@/lib/utils/restash-error";
 import prisma from "@/db/prisma";
 import { withTeam } from "@/lib/auth/with-team";
 
@@ -13,6 +13,6 @@ export const DELETE = withTeam(async ({ params, team }) => {
     return NextResponse.json({ message: "API key deleted" }, { status: 200 });
   } catch (e) {
     console.error(e);
-    return upbaseError("Failed to delete API key", 500);
+    return restashError("Failed to delete API key", 500);
   }
 });

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { withTeam } from "@/lib/auth/with-team";
-import { upbaseError } from "@/lib/utils/upbase-error";
+import { restashError } from "@/lib/utils/restash-error";
 import { apiKeySchema } from "@/lib/zod";
 import { nanoid } from "@/lib/utils/alphabet";
 import prisma from "@/db/prisma";
@@ -15,11 +15,11 @@ export const POST = withTeam(async ({ req, team }) => {
     const { name, origins }: CreateApiKeyRequest = await req.json();
 
     if (apiKeySchema.safeParse({ name, origins }).error) {
-      return upbaseError("Invalid request", 400);
+      return restashError("Invalid request", 400);
     }
 
     if (await prisma.apiKey.findFirst({ where: { name: name.trim(), teamId: team.id } })) {
-      return upbaseError("API key with this name already exists", 400);
+      return restashError("API key with this name already exists", 400);
     }
 
     let secretKey = `sk_${nanoid(48)}`;
@@ -45,6 +45,6 @@ export const POST = withTeam(async ({ req, team }) => {
     return NextResponse.json({ message: "API key created", secretKey }, { status: 200 });
   } catch (e) {
     console.error(e);
-    return upbaseError("Failed to create API key", 500);
+    return restashError("Failed to create API key", 500);
   }
 });

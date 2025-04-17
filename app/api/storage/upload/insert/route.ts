@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { withTeam } from "@/lib/auth/with-team";
 import prisma from "@/db/prisma";
-import { upbaseError } from "@/lib/utils/upbase-error";
+import { restashError } from "@/lib/utils/restash-error";
 
 type InsertObjectRequest = {
   name: string;
@@ -17,7 +17,7 @@ export const POST = withTeam(async ({ req, team }) => {
   // if not, create them
   // start at the base and keep adding subfolders
   if (!key.startsWith(`${team.id}/`)) {
-    return upbaseError("Invalid base key", 400);
+    return restashError("Invalid base key", 400);
   }
   const parts = key.split("/");
   let currentKey = ``; // should have team id in it already

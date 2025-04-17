@@ -25,7 +25,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { UpbaseErrorResponse } from "@/types";
+import { RestashErrorResponse } from "@/types";
 import { useRouter } from "next/navigation";
 
 export const ApiKeyClient = ({ id }: { id: string }) => {
@@ -84,7 +84,7 @@ export const ApiKeyClient = ({ id }: { id: string }) => {
         <Card className="space-y-4 shadow-none">
           <div className="space-y-0.5">
             <p className="text-sm font-medium">Secret key</p>
-            <p className="text-muted-foreground text-smaller">{key.secretKey}</p>
+            <p className="text-muted-foreground text-sm">{key.secretKey}</p>
           </div>
           <div className="space-y-0.5">
             <p className="text-sm font-medium">Public key</p>
@@ -97,7 +97,7 @@ export const ApiKeyClient = ({ id }: { id: string }) => {
                   toast.success("Copied to clipboard");
                 }}
               />
-              <p className="text-muted-foreground text-smaller break-all">{key.publicKey}</p>
+              <p className="text-muted-foreground text-sm break-all">{key.publicKey}</p>
             </div>
           </div>
           <div className={cn("", key.origins.length > 0 ? "space-y-1" : "space-y-0.5")}>
@@ -115,7 +115,7 @@ export const ApiKeyClient = ({ id }: { id: string }) => {
                 ))}
               </div>
             ) : (
-              <p className="text-smaller text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 No origins authorized.{" "}
                 <a
                   href="#"
@@ -128,13 +128,13 @@ export const ApiKeyClient = ({ id }: { id: string }) => {
           </div>
           <div className="space-y-0.5">
             <p className="text-sm font-medium">Last used</p>
-            <p className="text-muted-foreground text-smaller">
+            <p className="text-muted-foreground text-sm">
               {key.lastUsedAt ? key.lastUsedAt.toString() : "Never"}
             </p>
           </div>
           <div className="space-y-0.5">
             <p className="text-sm font-medium">Created</p>
-            <p className="text-muted-foreground text-smaller break-all">
+            <p className="text-muted-foreground text-sm break-all">
               {new Date(key.createdAt).toLocaleString(undefined, { dateStyle: "long" })}
             </p>
           </div>
@@ -166,7 +166,7 @@ export const ApiKeyClient = ({ id }: { id: string }) => {
                   });
 
                   if (!res.ok) {
-                    const data: UpbaseErrorResponse = await res.json();
+                    const data: RestashErrorResponse = await res.json();
                     toast.error(data.message);
                     return;
                   }

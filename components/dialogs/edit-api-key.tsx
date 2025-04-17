@@ -17,7 +17,7 @@ import { useEffect, useRef, useState } from "react";
 import { ButtonLoader } from "@/components/ui/button-loader";
 import { apiKeySchema, type ApiKeySchema } from "@/lib/zod";
 import { toast } from "sonner";
-import { UpbaseErrorResponse } from "@/types";
+import { RestashErrorResponse } from "@/types";
 import { useApiKey } from "@/hooks/swr/use-api-key";
 
 export const EditApiKeyDialog = ({
@@ -61,7 +61,7 @@ export const EditApiKeyDialog = ({
       });
 
       if (!res.ok) {
-        const data = (await res.json()) as UpbaseErrorResponse;
+        const data = (await res.json()) as RestashErrorResponse;
         toast.error(data.message);
         return;
       }
@@ -105,7 +105,6 @@ export const EditApiKeyDialog = ({
               id="key-name"
               placeholder="API key name"
               {...register("name")}
-              className="h-8"
             />
             {errors.name && <p className="text-[0.8rem] text-red-500">{errors.name.message}</p>}
           </div>
@@ -116,7 +115,6 @@ export const EditApiKeyDialog = ({
             <Input
               autoComplete="off"
               id="origins"
-              className="h-8"
               placeholder="Authorized origins"
               {...register("origins")}
             />
