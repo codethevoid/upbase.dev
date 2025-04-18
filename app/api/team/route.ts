@@ -1,9 +1,9 @@
-import { withTeam } from "@/lib/auth/with-team";
+import { withWebApp } from "@/lib/auth/with-web-app";
 import { NextResponse } from "next/server";
 import prisma from "@/db/prisma";
 import { restashError } from "@/lib/utils/restash-error";
 
-export const GET = withTeam(async ({ team }) => {
+export const GET = withWebApp(async ({ team }) => {
   const teamInfo = await prisma.team.findUnique({
     where: { id: team.id },
     select: { name: true, storageObjects: { select: { size: true, storageType: true } } },

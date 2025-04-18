@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { withTeam } from "@/lib/auth/with-team";
+import { withWebApp } from "@/lib/auth/with-web-app";
 import { folderSchema } from "@/lib/zod";
 import prisma from "@/db/prisma";
 
@@ -24,7 +24,7 @@ const getFullKey = (baseKey: string, teamId: string, folderName: string) => {
   return `${fullKey}${folderName}`;
 };
 
-export const POST = withTeam(async ({ req, team }) => {
+export const POST = withWebApp(async ({ req, team }) => {
   try {
     const { name, baseKey } = (await req.json()) as CreateFolderRequest;
     const fullKey = getFullKey(baseKey, team.id, name);

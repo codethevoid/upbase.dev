@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { withTeam } from "@/lib/auth/with-team";
+import { withWebApp } from "@/lib/auth/with-web-app";
 import { restashError } from "@/lib/utils/restash-error";
 import prisma from "@/db/prisma";
 
@@ -11,7 +11,7 @@ const teamNameSchema = z.object({
     .max(50, { message: "Name must be less than 50 characters" }),
 });
 
-export const PATCH = withTeam(async ({ req, params, team }) => {
+export const PATCH = withWebApp(async ({ req, params, team }) => {
   try {
     const { id } = (await params) as { id: string };
     const { name }: { name: string } = await req.json();

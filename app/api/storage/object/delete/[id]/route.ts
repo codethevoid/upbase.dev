@@ -1,11 +1,11 @@
-import { withTeam } from "@/lib/auth/with-team";
+import { withWebApp } from "@/lib/auth/with-web-app";
 import { NextResponse } from "next/server";
 import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 import prisma from "@/db/prisma";
 import { s3Client } from "@/lib/s3/client";
 import { restashError } from "@/lib/utils/restash-error";
 
-export const DELETE = withTeam(async ({ team, params }) => {
+export const DELETE = withWebApp(async ({ team, params }) => {
   try {
     const { id } = await params;
 

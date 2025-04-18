@@ -1,9 +1,9 @@
-import { withTeam } from "@/lib/auth/with-team";
+import { withWebApp } from "@/lib/auth/with-web-app";
 import { restashError } from "@/lib/utils/restash-error";
 import prisma from "@/db/prisma";
 import { NextResponse } from "next/server";
 
-export const GET = withTeam(async ({ team }) => {
+export const GET = withWebApp(async ({ team }) => {
   try {
     const keys = await prisma.apiKey.findMany({ where: { teamId: team.id } });
 

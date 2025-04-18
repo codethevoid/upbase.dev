@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { withTeam } from "@/lib/auth/with-team";
+import { withWebApp } from "@/lib/auth/with-web-app";
 import { restashError } from "@/lib/utils/restash-error";
 import { apiKeySchema } from "@/lib/zod";
 import { nanoid } from "@/lib/utils/alphabet";
@@ -10,7 +10,7 @@ type CreateApiKeyRequest = {
   origins?: string;
 };
 
-export const POST = withTeam(async ({ req, team }) => {
+export const POST = withWebApp(async ({ req, team }) => {
   try {
     const { name, origins }: CreateApiKeyRequest = await req.json();
 

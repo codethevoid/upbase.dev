@@ -17,8 +17,12 @@ model User {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  name      String?
+  avatar    String?
   email     String   @unique
-  password  String
+  password  String?
+  googleId  String?  @unique
+  githubId  String?  @unique
   teams     Team[]
 }
 

@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { restashError } from "@/lib/utils/restash-error";
 import prisma from "@/db/prisma";
-import { withTeam } from "@/lib/auth/with-team";
+import { withWebApp } from "@/lib/auth/with-web-app";
 
-export const DELETE = withTeam(async ({ params, team }) => {
+export const DELETE = withWebApp(async ({ params, team }) => {
   try {
     const { id } = (await params) as { id: string };
 

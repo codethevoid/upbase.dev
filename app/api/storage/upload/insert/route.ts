@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { withTeam } from "@/lib/auth/with-team";
+import { withWebApp } from "@/lib/auth/with-web-app";
 import prisma from "@/db/prisma";
 import { restashError } from "@/lib/utils/restash-error";
 
@@ -10,7 +10,7 @@ type InsertObjectRequest = {
   type: string;
 };
 
-export const POST = withTeam(async ({ req, team }) => {
+export const POST = withWebApp(async ({ req, team }) => {
   const { name, key, size, type } = (await req.json()) as InsertObjectRequest;
 
   // break the key into parts and check if subfolders exist

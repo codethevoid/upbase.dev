@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { withTeam } from "@/lib/auth/with-team";
+import { withWebApp } from "@/lib/auth/with-web-app";
 import prisma from "@/db/prisma";
 import { restashError } from "@/lib/utils/restash-error";
 
-export const GET = withTeam(async ({ params, team }) => {
+export const GET = withWebApp(async ({ params, team }) => {
   const { id } = await params;
   const object = await prisma.storageObject.findFirst({
     where: { id, teamId: team.id },

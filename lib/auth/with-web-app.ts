@@ -17,7 +17,7 @@ type WithTeamHandler = ({
   team: { id: string };
 }) => Promise<NextResponse>;
 
-export const withTeam = (handler: WithTeamHandler) => {
+export const withWebApp = (handler: WithTeamHandler) => {
   return async (req: NextRequest, { params }: Params): Promise<NextResponse> => {
     try {
       const session = await auth();
@@ -26,26 +26,14 @@ export const withTeam = (handler: WithTeamHandler) => {
         // check for Bearer token in the request headers
         // this is for API key authentication if the user is using the API instead of the web app
         const secretKey = req.headers.get("Authorization")?.split(" ")[1];
-        const publicKey = req.headers.get("x-api-key");
-        if (!secretKey && !publicKey) return restashError("No API key provided.", 401);
+        if (!secretKey) return restashError("No API key provided.", 401);
 
         const key = await prisma.apiKey.findFirst({
-          where: {
-            ...(publicKey && { publicKey }),
-            ...(secretKey && { secretKey }),
-          },
-          select: { teamId: true, origins: true, id: true },
+          where: { secretKey },
+          select: { teamId: true, id: true },
         });
 
         if (!key) return restashError("Invalid API key.", 401);
-
-        if (publicKey) {
-          // check if the domain is authorized
-          const origin = req.headers.get("origin");
-          if (!origin) return restashError("No origin present.", 401);
-          const isAuthorized = key.origins.some((o) => o === origin);
-          if (!isAuthorized) return restashError("Origin not authorized.", 401);
-        }
 
         // update api key last used data
         after(async () => {

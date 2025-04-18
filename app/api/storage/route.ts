@@ -1,8 +1,8 @@
-import { withTeam } from "@/lib/auth/with-team";
+import { withWebApp } from "@/lib/auth/with-web-app";
 import prisma from "@/db/prisma";
 import { NextResponse } from "next/server";
 
-export const GET = withTeam(async ({ req, team }) => {
+export const GET = withWebApp(async ({ req, team }) => {
   const key = req.nextUrl.searchParams.get("key") || "/";
   const page = req.nextUrl.searchParams.get("page") || "1";
   const limit = req.nextUrl.searchParams.get("limit") || "100";

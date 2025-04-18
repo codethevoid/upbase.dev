@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { withTeam } from "@/lib/auth/with-team";
+import { withWebApp } from "@/lib/auth/with-web-app";
 import { restashError } from "@/lib/utils/restash-error";
 import { apiKeySchema } from "@/lib/zod";
 import prisma from "@/db/prisma";
@@ -9,7 +9,7 @@ type EditApiKeyRequest = {
   origins?: string;
 };
 
-export const PATCH = withTeam(async ({ req, team, params }) => {
+export const PATCH = withWebApp(async ({ req, team, params }) => {
   try {
     const { name, origins }: EditApiKeyRequest = await req.json();
     const { id } = await params;

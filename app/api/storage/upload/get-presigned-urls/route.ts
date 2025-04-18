@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { withTeam } from "@/lib/auth/with-team";
+import { withWebApp } from "@/lib/auth/with-web-app";
 import { restashError } from "@/lib/utils/restash-error";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
@@ -30,7 +30,7 @@ const getFilePath = (path: string, filename: string) => {
   return newPath;
 };
 
-export const POST = withTeam(async ({ req, team }) => {
+export const POST = withWebApp(async ({ req, team }) => {
   try {
     const body = (await req.json()) as PresignedUrlsRequest;
     const { files } = body;
