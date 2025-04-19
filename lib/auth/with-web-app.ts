@@ -1,11 +1,11 @@
-import { after, NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import prisma from "@/db/prisma";
 import { restashError } from "@/lib/utils/restash-error";
 
 type Params = { params: Promise<Record<string, string>> };
 
-type WithTeamHandler = ({
+type WithWebAppHandler = ({
   req,
   params,
   user,
@@ -17,40 +17,17 @@ type WithTeamHandler = ({
   team: { id: string };
 }) => Promise<NextResponse>;
 
-export const withWebApp = (handler: WithTeamHandler) => {
+export const withWebApp = (handler: WithWebAppHandler) => {
   return async (req: NextRequest, { params }: Params): Promise<NextResponse> => {
     try {
       const session = await auth();
-
-      if (!session) {
-        // check for Bearer token in the request headers
-        // this is for API key authentication if the user is using the API instead of the web app
-        const secretKey = req.headers.get("Authorization")?.split(" ")[1];
-        if (!secretKey) return restashError("No API key provided.", 401);
-
-        const key = await prisma.apiKey.findFirst({
-          where: { secretKey },
-          select: { teamId: true, id: true },
-        });
-
-        if (!key) return restashError("Invalid API key.", 401);
-
-        // update api key last used data
-        after(async () => {
-          await prisma.apiKey.update({
-            where: { id: key.id },
-            data: { lastUsedAt: new Date() },
-          });
-        });
-
-        // continue to handler with the team id
-        return handler({ req, params, team: { id: key.teamId } });
-      }
 
       if (!session?.user) return restashError("No user found.", 401);
 
       const user = await prisma.user.findUnique({
         where: { id: session.user.id },
+        // will need to change this in the future to select default team (or current team)
+        // once we add the option for multiple teams
         select: { id: true, email: true, teams: { select: { id: true } } },
       });
 

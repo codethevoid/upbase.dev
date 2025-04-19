@@ -5,7 +5,7 @@ import { useStorage } from "@/hooks/swr/use-storage";
 import { useSearchParams } from "next/navigation";
 import NextLink from "next/link";
 import { Card } from "@/components/ui/card";
-import { CodeXml, File, Folder, Upload } from "lucide-react";
+import { CodeXml, File, Folder, ImageIcon, Upload } from "lucide-react";
 import { formatBytes } from "@/lib/utils/format-bytes";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
@@ -107,6 +107,8 @@ export const StorageClient = () => {
                             <div className="ring-offset-background flex size-[26px] shrink-0 items-center justify-center rounded-md bg-gradient-to-bl from-zinc-100 to-zinc-300 ring-1 ring-zinc-300 ring-offset-2 dark:from-zinc-500 dark:to-zinc-900 dark:ring-zinc-400">
                               {object.storageType === "folder" ? (
                                 <Folder className="size-3.5" />
+                              ) : object.contentType?.startsWith("image") ? (
+                                <ImageIcon className="size-3.5" />
                               ) : (
                                 <File className="size-3.5" />
                               )}

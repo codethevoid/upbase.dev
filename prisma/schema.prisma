@@ -50,6 +50,7 @@ model StorageObject {
   key         String      @unique
   size        Int?
   contentType String?
+  url         String?
   storageType StorageType
   team        Team        @relation(fields: [teamId], references: [id])
   teamId      String

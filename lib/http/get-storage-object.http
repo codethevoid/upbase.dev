@@ -1,0 +1,4 @@
+### Retrieve a storage object by ID or Key
+GET http://localhost:3000/api/v1/objects/retrieve?id=cm9n2ryuq0009pkmmn8skcnd5
+Content-Type: application/json
+Authorization: Bearer sk_MCZQGvE7VxAeeHU7LjdnYO2Wh409bhrmJgZZXmZj9PWdgnFH // dev token

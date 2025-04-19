@@ -1,0 +1,13 @@
+### Test S3 Presigned URL Generation
+POST http://localhost:3000/api/v1/objects/upload/prepare
+Content-Type: application/json
+X-Public-Key: pk_O74jOvkLbxz9kldpzUDSuhmFjA6WJTYYVjHm9bGV2PoWCQYC
+Origin: http://localhost:3000
+
+{
+  "file": {
+    "name": "test-file.txt",
+    "path": "./test-folder/test-file.txt",
+    "size": 100000
+  }
+}

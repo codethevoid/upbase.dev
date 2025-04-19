@@ -45,7 +45,7 @@ const createUser = async ({
         data: {
           name: "root",
           storageType: "folder",
-          key: `${team.id}`,
+          key: `${team.id}/`,
           team: { connect: { id: team.id } },
         },
       });
@@ -152,7 +152,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.id = token.user_id as string;
       }
 
-      console.log(session);
       return session;
     },
   },

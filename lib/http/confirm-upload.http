@@ -1,0 +1,9 @@
+### Test file upload confirmation
+POST http://localhost:3000/api/v1/objects/upload/confirm
+Content-Type: application/json
+X-Public-Key: pk_O74jOvkLbxz9kldpzUDSuhmFjA6WJTYYVjHm9bGV2PoWCQYC
+Origin: http://localhost:3000
+
+{
+  "confirmToken": "LCiCt640cttdMGdOWSw2wR11Gu3s5Kbb"
+}

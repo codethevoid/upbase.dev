@@ -6,6 +6,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { s3Client } from "@/lib/s3/client";
 import prisma from "@/db/prisma";
 import { FREE_PLAN_FILE_SIZE_LIMIT, FREE_PLAN_STORAGE_LIMIT } from "@/lib/utils/limits";
+import { formatBytes } from "@/lib/utils/format-bytes";
 
 type PresignedUrlsRequest = {
   files: {
@@ -52,7 +53,10 @@ export const POST = withWebApp(async ({ req, team }) => {
     const maxSize = FREE_PLAN_FILE_SIZE_LIMIT; // 1GB
     files.forEach((file) => {
       if (file.size > maxSize) {
-        return restashError(`File ${file.name} is larger than 1GB`, 400);
+        return restashError(
+          `File ${file.name} is larger than ${formatBytes(FREE_PLAN_FILE_SIZE_LIMIT)}`,
+          400,
+        );
       }
     });
 
@@ -65,7 +69,10 @@ export const POST = withWebApp(async ({ req, team }) => {
     });
 
     if ((storageObjects?._sum?.size || 0) + totalSize > FREE_PLAN_STORAGE_LIMIT) {
-      return restashError("You have exceeded your storage limit of 5GB", 400);
+      return restashError(
+        `You have exceeded your storage limit of ${formatBytes(FREE_PLAN_STORAGE_LIMIT)}`,
+        400,
+      );
     }
 
     // generate file keys

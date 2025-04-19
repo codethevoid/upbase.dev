@@ -44,13 +44,16 @@ export const POST = withWebApp(async ({ req, team }) => {
     }
   }
 
+  const url = `${process.env.NEXT_PUBLIC_CDN_BASE_URL}/${key}`;
+
   await prisma.storageObject.upsert({
     where: { key },
-    update: { name, size, contentType: type, key },
+    update: { name, size, contentType: type, url, storageType: "file" },
     create: {
       name,
       size,
       contentType: type,
+      url,
       key,
       storageType: "file",
       team: { connect: { id: team.id } },
