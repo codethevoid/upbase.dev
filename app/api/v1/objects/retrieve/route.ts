@@ -36,5 +36,3 @@ export const GET = withSecretKey(async ({ req, team }) => {
     return restashError("Failed to get object", 500);
   }
 });
-
-// export const DELETE = withSecretKey(async ({ team, params }) => {});
