@@ -12,7 +12,7 @@ type WithSecretKeyHandler = ({
 }: {
   req: NextRequest;
   params: Params["params"];
-  team: { id: string };
+  team: { id: string; secretKey: string; publicKey: string };
 }) => Promise<NextResponse>;
 
 export const withSecretKey = (handler: WithSecretKeyHandler) => {
@@ -25,7 +25,7 @@ export const withSecretKey = (handler: WithSecretKeyHandler) => {
       // validate secret key
       const key = await prisma.apiKey.findUnique({
         where: { secretKey },
-        select: { id: true, teamId: true },
+        select: { id: true, teamId: true, publicKey: true },
       });
 
       if (!key) return restashError("Invalid API key.", 401);
@@ -46,7 +46,11 @@ export const withSecretKey = (handler: WithSecretKeyHandler) => {
         });
       });
 
-      return handler({ req, params, team: { id: key.teamId } });
+      return handler({
+        req,
+        params,
+        team: { id: key.teamId, secretKey, publicKey: key.publicKey },
+      });
     } catch (e) {
       console.error(e);
       return restashError("Internal server error", 500);

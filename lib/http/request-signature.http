@@ -1,0 +1,4 @@
+### Requests a signature to be used for uploading on the client
+GET http://localhost:3000/api/v1/signatures/request
+Content-Type: application/json
+Authorization: Bearer sk_MCZQGvE7VxAeeHU7LjdnYO2Wh409bhrmJgZZXmZj9PWdgnFH // dev token

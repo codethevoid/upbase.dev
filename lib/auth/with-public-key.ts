@@ -12,20 +12,26 @@ type WithPublicKeyHandler = ({
 }: {
   req: NextRequest;
   params: Params["params"];
-  team: { id: string };
+  team: { id: string; requiresSignature: boolean; publicKey: string; secretKey: string };
 }) => Promise<NextResponse>;
 
 export const withPublicKey = (handler: WithPublicKeyHandler) => {
   return async (req: NextRequest, { params }: Params): Promise<NextResponse> => {
     try {
       // Check for Bearer token in the request headers
-      const publicKey = req.headers.get("x-public-key");
+      const publicKey = req.headers.get("x-api-key");
       if (!publicKey) return restashError("No API key provided.", 401);
 
       // validate public key
       const key = await prisma.apiKey.findUnique({
         where: { publicKey },
-        select: { id: true, teamId: true, origins: true },
+        select: {
+          id: true,
+          teamId: true,
+          origins: true,
+          secretKey: true,
+          team: { select: { requiresSignature: true } },
+        },
       });
 
       if (!key) return restashError("Invalid API key.", 401);
@@ -58,7 +64,16 @@ export const withPublicKey = (handler: WithPublicKeyHandler) => {
         });
       });
 
-      return handler({ req, params, team: { id: key.teamId } });
+      return handler({
+        req,
+        params,
+        team: {
+          id: key.teamId,
+          requiresSignature: key.team.requiresSignature,
+          publicKey,
+          secretKey: key.secretKey,
+        },
+      });
     } catch (e) {
       console.error(e);
       return restashError("Internal server error", 500);

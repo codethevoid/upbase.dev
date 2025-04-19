@@ -9,6 +9,7 @@ import { NextResponse } from "next/server";
 import { redis } from "@/lib/upstash/redis";
 import { nanoid } from "@/lib/utils/alphabet";
 import { z } from "zod";
+import { createHmac } from "crypto";
 
 const schema = z.object({
   name: z.string().min(1),
@@ -24,13 +25,29 @@ type GeneratePresignedUrlRequest = {
     size: number;
     path?: string;
   };
+  signature?: string;
+  payload?: string;
 };
 
 export const POST = withPublicKey(async ({ team, req }) => {
   try {
-    const { file }: GeneratePresignedUrlRequest = await req.json();
+    const { file, signature, payload }: GeneratePresignedUrlRequest = await req.json();
     if (!file) {
       return restashError("File information is required", 400);
+    }
+
+    // verify signature if required
+    if (team.requiresSignature) {
+      // TODO: verify signature
+      if (!signature || !payload) {
+        return restashError("Signature is required", 400);
+      }
+
+      // verify payload with users secret key
+      const expectedSignature = createHmac("sha256", team.secretKey).update(payload).digest("hex");
+      if (expectedSignature !== signature) {
+        return restashError("Invalid signature", 401);
+      }
     }
 
     const parsed = schema.safeParse(file);

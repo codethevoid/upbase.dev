@@ -5,6 +5,7 @@ type UseTeamResponse = {
   id: string;
   name: string;
   usage: number;
+  requiresSignature: boolean;
 };
 
 export const useTeam = () => {

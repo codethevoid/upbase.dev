@@ -24,6 +24,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { FREE_PLAN_STORAGE_LIMIT } from "@/lib/utils/limits";
+import { ExternalLink } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 
 const teamNameSchema = z.object({
   name: z
@@ -37,6 +39,8 @@ type TeamNameSchema = z.infer<typeof teamNameSchema>;
 export const TeamSettingsClient = () => {
   const { team, isLoading, error } = useTeam();
   const [isUpdatingTeamName, setIsUpdatingTeamName] = useState(false);
+  const [isUpdatingSignature, setIsUpdatingSignature] = useState(false);
+  const [isSignatureEnabled, setIsSignatureEnabled] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
   const { handleSubmit, register, setValue } = useForm<TeamNameSchema>({
@@ -58,7 +62,6 @@ export const TeamSettingsClient = () => {
         return;
       }
 
-      setIsUpdatingTeamName(false);
       toast.success("Team name updated successfully");
     } catch (e) {
       console.error(e);
@@ -69,7 +72,10 @@ export const TeamSettingsClient = () => {
   };
 
   useEffect(() => {
-    if (team) setValue("name", team.name);
+    if (team) {
+      setValue("name", team.name);
+      setIsSignatureEnabled(team.requiresSignature);
+    }
   }, [team, setValue]);
 
   if (isLoading) {
@@ -110,6 +116,65 @@ export const TeamSettingsClient = () => {
             onClick={() => formRef.current?.requestSubmit()}
           >
             {isUpdatingTeamName ? <ButtonLoader /> : "Save"}
+          </Button>
+        </div>
+      </Card>
+      <Card className="overflow-hidden p-0">
+        <div className="border-b px-4 py-3 font-medium">Require signatures</div>
+        <div className="space-y-4 px-4 py-6">
+          <div className="space-y-2">
+            <div>
+              <Label htmlFor="signature">Enforce signature on uploads</Label>
+            </div>
+            <div>
+              <Switch
+                id="signatures"
+                checked={isSignatureEnabled}
+                onCheckedChange={setIsSignatureEnabled}
+              />
+            </div>
+          </div>
+          <p className="text-smaller text-muted-foreground max-w-[70ch]">
+            This will require your client-side uploads to be signed with a secure token generated on
+            your backend. It’s recommended for production apps to ensure only authorized uploads are
+            allowed.{" "}
+            <a href="#" className="text-foreground inline-flex items-center gap-1 hover:underline">
+              <span>Learn more</span> <ExternalLink className="size-3" />
+            </a>
+          </p>
+        </div>
+        <div className="flex items-center justify-between border-t px-4 py-3">
+          <p className="text-smaller text-muted-foreground">Update upload preferences</p>
+          <Button
+            size="sm"
+            className="w-[55px]"
+            disabled={isUpdatingSignature}
+            onClick={async () => {
+              setIsUpdatingSignature(true);
+              try {
+                const res = await fetch("/api/team/edit-signatures", {
+                  method: "PATCH",
+                  body: JSON.stringify({
+                    requiresSignature: isSignatureEnabled,
+                  }),
+                });
+
+                if (!res.ok) {
+                  const data: RestashErrorResponse = await res.json();
+                  toast.error(data.message);
+                  return;
+                }
+
+                toast.success("Team signature settings updated successfully");
+              } catch (e) {
+                console.error(e);
+                toast.error("There was an error updating your team signature settings");
+              } finally {
+                setIsUpdatingSignature(false);
+              }
+            }}
+          >
+            {isUpdatingSignature ? <ButtonLoader /> : "Save"}
           </Button>
         </div>
       </Card>

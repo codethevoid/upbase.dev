@@ -53,10 +53,6 @@ export const POST = withPublicKey(async ({ team, req }) => {
       if (!fileInfo) {
         return restashError("File not found", 404);
       }
-
-      if (fileInfo.ContentLength !== size) {
-        return restashError("File size does not match", 400);
-      }
     } catch (e) {
       return restashError("File not found", 404);
     }
