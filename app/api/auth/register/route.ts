@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import prisma from "@/db/prisma";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { sanitizeEmail } from "@/lib/utils/santiize-email";
 import { restashError } from "@/lib/utils/restash-error";
 
