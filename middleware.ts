@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
+import { auth } from "@/auth";
 
 const protectedRoutes = ["/storage", "/api-keys", "/settings", "/profile"];
 const authRoutes = ["/login", "/register", "/forgot-password", "/reset-password"];
@@ -14,13 +14,13 @@ export const middleware = async (req: NextRequest) => {
   }
 
   if (protectedRoutes.find((p) => path.startsWith(p))) {
-    const token = await getToken({ req, secret: process.env.AUTH_SECRET });
+    const token = await auth();
     if (!token) return NextResponse.redirect(new URL("/login", req.url));
     return NextResponse.next();
   }
 
   if (authRoutes.includes(path)) {
-    const token = await getToken({ req, secret: process.env.AUTH_SECRET });
+    const token = await auth();
     if (token) return NextResponse.redirect(new URL("/storage", req.url));
     return NextResponse.next();
   }
