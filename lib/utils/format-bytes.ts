@@ -18,5 +18,5 @@ const convertToMetricUnit = (
 
 export const formatBytes = (bytes: number) => {
   const result = byteSize(bytes, { precision: 2, units: "iec" });
-  return `${result.value} ${convertToMetricUnit(result.unit as keyof typeof convertToMetricUnit)}`;
+  return `${result.value} ${convertToMetricUnit(result.unit as keyof typeof convertToMetricUnit) || result.unit}`;
 };
