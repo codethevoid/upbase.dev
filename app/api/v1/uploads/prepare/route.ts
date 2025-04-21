@@ -21,7 +21,7 @@ const schema = z.object({
 type GeneratePresignedUrlRequest = {
   file: {
     name: string;
-    type?: string;
+    type: string;
     size: number;
     path?: string;
   };
@@ -107,7 +107,7 @@ export const POST = withPublicKey(async ({ team, req }) => {
       Key: path,
       Conditions: [
         { bucket: process.env.S3_BUCKET! },
-        ["content-length-range", 0, file.size * 1.05],
+        ["content-length-range", 0, Math.ceil(file.size * 1.05)],
         ["starts-with", "$key", `${team.id}/`],
       ],
       Expires: 300, // 300 seconds or 5 minutes
