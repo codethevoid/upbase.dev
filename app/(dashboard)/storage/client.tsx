@@ -20,7 +20,7 @@ export const StorageClient = () => {
   const key = searchParams.get("key") || "/";
   const [page, setPage] = useState(1);
   const limit = 100;
-  const { objects, total, error, isLoading } = useStorage({ key, page, limit });
+  const { objects, total, isLoading } = useStorage({ key, page, limit });
   const [isFirstLoad, setIsFirstLoad] = useState(true);
 
   useEffect(() => {

@@ -69,12 +69,13 @@ export const POST = withPublicKey(async ({ team, req }) => {
       path = `${team.id}/${path}`;
     }
 
-    if (!path.endsWith("/")) {
-      path += "/";
-    }
-
+    // check if path ends with file name
     if (!path.endsWith(file.name)) {
-      path += file.name;
+      if (path.endsWith("/")) {
+        path += file.name;
+      } else {
+        path = `${path}/${file.name}`;
+      }
     }
 
     // check size limit

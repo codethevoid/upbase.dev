@@ -54,6 +54,7 @@ export const POST = withPublicKey(async ({ team, req }) => {
         return restashError("File not found", 404);
       }
     } catch (e) {
+      console.error(e);
       return restashError("File not found", 404);
     }
 

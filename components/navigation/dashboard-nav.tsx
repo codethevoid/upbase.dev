@@ -4,6 +4,7 @@ import NextLink from "next/link";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Breadcrumbs } from "@/components/navigation/breadcrumbs";
+import { Suspense } from "react";
 
 export const DashboardNav = () => {
   return (
@@ -11,7 +12,9 @@ export const DashboardNav = () => {
       <div className="flex items-center justify-between gap-4">
         <div className="flex min-w-0 items-center gap-4">
           <SidebarTrigger className="text-muted-foreground" />
-          <Breadcrumbs />
+          <Suspense>
+            <Breadcrumbs />
+          </Suspense>
         </div>
         <div className="flex items-center gap-4">
           <Button size="sm" variant="outline">

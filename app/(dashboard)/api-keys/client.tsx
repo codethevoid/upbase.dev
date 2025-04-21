@@ -9,7 +9,7 @@ import NextLink from "next/link";
 import { Card } from "@/components/ui/card";
 
 export const ApiKeysClient = () => {
-  const { keys, isLoading, error } = useApiKeys();
+  const { keys, isLoading } = useApiKeys();
 
   return (
     <>
