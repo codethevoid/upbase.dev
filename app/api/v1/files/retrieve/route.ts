@@ -9,11 +9,11 @@ export const GET = withSecretKey(async ({ req, team }) => {
     const key = req.nextUrl.searchParams.get("key");
 
     if (!id && !key) {
-      return restashError("Object ID or key is required", 400);
+      return restashError("File ID or key is required", 400);
     }
 
     const object = await prisma.storageObject.findFirst({
-      where: { ...(id && { id }), ...(key && { key }), teamId: team.id },
+      where: { ...(id && { id }), ...(key && { key }), teamId: team.id, storageType: "file" },
       select: {
         createdAt: true,
         updatedAt: true,
@@ -21,18 +21,18 @@ export const GET = withSecretKey(async ({ req, team }) => {
         name: true,
         size: true,
         key: true,
+        url: true,
         contentType: true,
-        storageType: true,
       },
     });
 
     if (!object) {
-      return restashError("Object not found", 404);
+      return restashError("File not found", 404);
     }
 
-    return restashResponse("ok", 200, { object: { ...object } });
+    return restashResponse("ok", 200, { file: { ...object } });
   } catch (e) {
     console.error(e);
-    return restashError("Failed to get object", 500);
+    return restashError("Internal server error", 500);
   }
 });

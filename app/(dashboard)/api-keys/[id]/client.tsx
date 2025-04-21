@@ -167,7 +167,7 @@ export const ApiKeyClient = ({ id }: { id: string }) => {
 
                   if (!res.ok) {
                     const data: RestashErrorResponse = await res.json();
-                    toast.error(data.message);
+                    toast.error(data.error.message);
                     return;
                   }
 

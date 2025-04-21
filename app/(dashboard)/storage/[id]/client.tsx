@@ -179,7 +179,7 @@ export const StorageObjectClient = ({ id }: { id: string }) => {
 
                   if (!res.ok) {
                     const data = (await res.json()) as RestashErrorResponse;
-                    toast.error(data.message || "Failed to delete object");
+                    toast.error(data.error.message || "Failed to delete object");
                     return;
                   }
 

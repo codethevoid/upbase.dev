@@ -58,7 +58,7 @@ export const TeamSettingsClient = () => {
 
       if (!res.ok) {
         const data: RestashErrorResponse = await res.json();
-        toast.error(data.message);
+        toast.error(data.error.message);
         return;
       }
 
@@ -161,7 +161,7 @@ export const TeamSettingsClient = () => {
 
                 if (!res.ok) {
                   const data: RestashErrorResponse = await res.json();
-                  toast.error(data.message);
+                  toast.error(data.error.message);
                   return;
                 }
 

@@ -62,7 +62,7 @@ export const EditApiKeyDialog = ({
 
       if (!res.ok) {
         const data = (await res.json()) as RestashErrorResponse;
-        toast.error(data.message);
+        toast.error(data.error.message);
         return;
       }
 

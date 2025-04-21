@@ -21,7 +21,7 @@ export const POST = async (req: NextRequest) => {
     }
 
     if (await prisma.user.findUnique({ where: { email: sanitizeEmail(email) } })) {
-      return restashError("User already exists", 400);
+      return restashError("User already exists", 409);
     }
 
     await prisma.$transaction(async () => {
@@ -45,7 +45,6 @@ export const POST = async (req: NextRequest) => {
           storageType: "folder",
           key: `${team.id}/`,
           team: { connect: { id: team.id } },
-          isUploaded: true,
         },
       });
     });

@@ -5,8 +5,5 @@ export const restashResponse = (
   status: number,
   data: Record<string, unknown> = {},
 ) => {
-  return NextResponse.json(
-    { message, success: true, timestamp: new Date().toISOString(), ...data },
-    { status },
-  );
+  return NextResponse.json({ message, timestamp: new Date().toISOString(), ...data }, { status });
 };

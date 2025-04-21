@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { Separator } from "@/components/ui/separator";
+import { RestashErrorResponse } from "@/types";
 
 const schema = z.object({
   email: z.string().email({ message: "Please enter a valid email" }),
@@ -42,8 +43,8 @@ export const RegisterClient = () => {
       });
 
       if (!res.ok) {
-        const { message } = await res.json();
-        toast.error(message || "Something went wrong");
+        const { error }: RestashErrorResponse = await res.json();
+        toast.error(error.message);
         return;
       }
 

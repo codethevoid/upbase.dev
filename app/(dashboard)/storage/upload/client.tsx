@@ -8,7 +8,7 @@ import { useTeam } from "@/hooks/swr/use-team";
 import { Card } from "@/components/ui/card";
 import { Dropzone } from "@/app/(dashboard)/storage/upload/components/dropzone";
 import { useState } from "react";
-import type { FileWithPath } from "@/types";
+import type { FileWithPath, RestashErrorResponse } from "@/types";
 import { formatBytes } from "@/lib/utils/format-bytes";
 import { getFileType } from "@/lib/utils/get-file-type";
 import NextLink from "next/link";
@@ -55,8 +55,8 @@ export const UploadClient = () => {
       });
 
       if (!res.ok) {
-        const data = await res.json();
-        toast.error(data.message || "Something went wrong");
+        const data = (await res.json()) as RestashErrorResponse;
+        toast.error(data.error.message || "Something went wrong");
         setIsLoading(false);
         return;
       }

@@ -23,6 +23,7 @@ import { folderSchema } from "@/lib/zod";
 import { useStorage } from "@/hooks/swr/use-storage";
 import { ButtonLoader } from "@/components/ui/button-loader";
 import { useSearchParams } from "next/navigation";
+import { RestashErrorResponse } from "@/types";
 
 export const CreateFolderDialog = ({ page, limit }: { page: number; limit: number }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -51,8 +52,8 @@ export const CreateFolderDialog = ({ page, limit }: { page: number; limit: numbe
       });
 
       if (!res.ok) {
-        const data = await res.json();
-        toast.error(data.message);
+        const data = (await res.json()) as RestashErrorResponse;
+        toast.error(data.error.message);
         return;
       }
 
