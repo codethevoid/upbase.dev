@@ -6,6 +6,12 @@ const authRoutes = ["/login", "/register", "/forgot-password", "/reset-password"
 
 export const middleware = async (req: NextRequest) => {
   const path = req.nextUrl.pathname;
+  const host = req.headers.get("host");
+
+  if (host === "api.restash.io") {
+    // rewrite to the API route
+    return NextResponse.rewrite(new URL(`/api${path}`, req.url));
+  }
 
   if (protectedRoutes.find((p) => path.startsWith(p))) {
     const token = await getToken({ req, secret: process.env.AUTH_SECRET });

@@ -19,7 +19,7 @@ export const withPublicKey = (handler: WithPublicKeyHandler) => {
   return async (req: NextRequest, { params }: Params): Promise<NextResponse> => {
     try {
       // Check for Bearer token in the request headers
-      const publicKey = req.headers.get("x-api-key");
+      const publicKey = req.headers.get("x-public-key");
       if (!publicKey) return restashError("No API key provided.", 401);
 
       // validate public key

@@ -88,7 +88,7 @@ export const POST = withPublicKey(async ({ team, req }) => {
       }
     }
 
-    await prisma.storageObject.upsert({
+    const newFile = await prisma.storageObject.upsert({
       where: { key },
       update: {
         name,
@@ -108,7 +108,14 @@ export const POST = withPublicKey(async ({ team, req }) => {
       },
     });
 
-    return restashResponse("Upload confirmed successfully", 200);
+    return restashResponse("Upload confirmed successfully", 200, {
+      id: newFile.id,
+      name: newFile.name,
+      url: newFile.url,
+      size: newFile.size,
+      contentType: newFile.contentType,
+      key: newFile.key,
+    });
   } catch (e) {
     console.error(e);
     return restashError("An error occurred while confirming the upload", 500);

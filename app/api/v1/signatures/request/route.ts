@@ -15,6 +15,6 @@ export const GET = withSecretKey(async ({ team }) => {
     return restashResponse("Signature generated", 200, { payload, signature });
   } catch (e) {
     console.error(e);
-    return restashError("Failed to generate siganture", 500);
+    return restashError("Failed to generate signature", 500);
   }
 });
