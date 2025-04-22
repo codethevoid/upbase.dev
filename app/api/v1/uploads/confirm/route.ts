@@ -1,10 +1,10 @@
 import { restashError } from "@/lib/utils/restash-error";
-import { restashResponse } from "@/lib/utils/restash-response";
 import { withPublicKey } from "@/lib/auth/with-public-key";
 import { redis } from "@/lib/upstash/redis";
 import { HeadObjectCommand } from "@aws-sdk/client-s3";
 import { s3Client } from "@/lib/s3/client";
 import prisma from "@/db/prisma";
+import { NextResponse } from "next/server";
 
 type ConfirmUploadRequest = {
   confirmToken: string;
@@ -109,7 +109,7 @@ export const POST = withPublicKey(async ({ team, req }) => {
       },
     });
 
-    return restashResponse("Upload confirmed successfully", 200, {
+    return NextResponse.json({
       id: newFile.id,
       name: newFile.name,
       url: newFile.url,

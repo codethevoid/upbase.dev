@@ -1,7 +1,7 @@
 import { withSecretKey } from "@/lib/auth/with-secret-key";
 import { restashError } from "@/lib/utils/restash-error";
-import { restashResponse } from "@/lib/utils/restash-response";
 import prisma from "@/db/prisma";
+import { NextResponse } from "next/server";
 
 export const GET = withSecretKey(async ({ req, team }) => {
   try {
@@ -30,7 +30,7 @@ export const GET = withSecretKey(async ({ req, team }) => {
       return restashError("File not found", 404);
     }
 
-    return restashResponse("ok", 200, { file: { ...object } });
+    return NextResponse.json(object);
   } catch (e) {
     console.error(e);
     return restashError("Internal server error", 500);
