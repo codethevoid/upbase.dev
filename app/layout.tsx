@@ -15,23 +15,23 @@ import { Providers } from "@/app/providers";
 
 const instrument = Instrument_Sans({
   variable: "--font-instrument-sans",
-  subsets: ["latin"]
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Upbase.cloud - Global Storage for Developers"
+  title: "Restash - Global Storage for Developers",
 };
 
-export default function RootLayout({ children }: Readonly<{
-  children: React.ReactNode
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-    <body className={`${instrument.className} antialiased`}>
-    <Providers>
-      {children}
-    </Providers>
-    </body>
+      <body className={`${instrument.className} antialiased`}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
