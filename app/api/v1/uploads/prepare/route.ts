@@ -12,10 +12,10 @@ import { z } from "zod";
 import { createHmac } from "crypto";
 
 const schema = z.object({
-  name: z.string().min(1),
+  name: z.string().min(1).max(50),
   type: z.string().optional(),
   size: z.number().min(0),
-  path: z.string().optional(),
+  path: z.string().max(200).optional(),
 });
 
 type GeneratePresignedUrlRequest = {
