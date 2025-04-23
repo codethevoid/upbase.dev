@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { withWebApp } from "@/lib/auth/with-web-app";
 import { folderSchema } from "@/lib/zod";
 import prisma from "@/db/prisma";
+import { restashError } from "@/lib/utils/restash-error";
 
 type CreateFolderRequest = {
   name: string;
@@ -31,7 +32,7 @@ export const POST = withWebApp(async ({ req, team }) => {
 
     const parsed = folderSchema.safeParse({ name });
     if (parsed.error) {
-      return NextResponse.json({ message: "Invalid folder name" }, { status: 400 });
+      return restashError("Invalid folder name", 400);
     }
 
     console.log(fullKey);
@@ -39,20 +40,20 @@ export const POST = withWebApp(async ({ req, team }) => {
     // check if the folder already exists
     const existingFolder = await prisma.storageObject.findFirst({
       where: {
-        key: { startsWith: fullKey },
+        key: fullKey,
         teamId: team.id,
       },
     });
 
     if (existingFolder) {
-      return NextResponse.json({ message: "Folder or key already exists" }, { status: 400 });
+      return restashError("Folder or file with this key already exists", 400);
     }
 
     // create the folder
     await prisma.storageObject.create({
       data: {
         name,
-        key: fullKey + "/",
+        key: fullKey.endsWith("/") ? fullKey : `${fullKey}/`,
         team: { connect: { id: team.id } },
         storageType: "folder",
       },
