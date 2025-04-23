@@ -12,8 +12,8 @@ import { z } from "zod";
 import { createHmac } from "crypto";
 
 const schema = z.object({
-  name: z.string().min(1).max(50),
-  type: z.string().optional(),
+  name: z.string().min(1).max(100),
+  type: z.string(),
   size: z.number().min(0),
   path: z.string().max(200).optional(),
 });
