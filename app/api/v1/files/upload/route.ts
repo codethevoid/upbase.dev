@@ -6,8 +6,8 @@ import { s3Client } from "@/lib/s3/client";
 import prisma from "@/db/prisma";
 import { FREE_PLAN_STORAGE_LIMIT } from "@/lib/utils/limits";
 import { NextResponse } from "next/server";
-import { randomBytes } from "node:crypto";
 import { z } from "zod";
+import { fileTypeFromBuffer } from "file-type";
 
 export const maxDuration = 30; // 60 seconds
 
@@ -35,12 +35,11 @@ export const POST = withSecretKey(async ({ team, req }) => {
       return restashError("A valid file is required", 400);
     }
 
-    const isFile = file instanceof File;
-    let name = formData.get("name")?.toString();
-    if (!name) {
-      name = isFile ? file.name : `${randomBytes(8).toString("hex")}`;
-    }
+    const name = formData.get("name")?.toString() || file.name;
     let path = formData.get("path")?.toString() || "";
+
+    const arrayBuffer = await file.arrayBuffer();
+    const fileType = await fileTypeFromBuffer(arrayBuffer);
 
     if (file.size > 4 * 1024 * 1024) {
       // 4MB limit for server uploads
@@ -50,7 +49,7 @@ export const POST = withSecretKey(async ({ team, req }) => {
     const uploadRequest: UploadRequest = {
       file: {
         name,
-        type: file.type,
+        type: fileType?.mime || file.type,
         size: file.size,
         path,
       },
@@ -92,13 +91,13 @@ export const POST = withSecretKey(async ({ team, req }) => {
       return restashError(`Total storage size exceeds the ${FREE_PLAN_STORAGE_LIMIT} limit`, 400);
     }
 
-    const buffer = Buffer.from(await file.arrayBuffer());
+    const buffer = Buffer.from(arrayBuffer);
 
     const command = new PutObjectCommand({
       Bucket: process.env.S3_BUCKET,
       Key: path,
       Body: buffer,
-      ContentType: file.type,
+      ContentType: fileType?.mime || file.type,
     });
 
     // upload the file to s3
@@ -135,7 +134,7 @@ export const POST = withSecretKey(async ({ team, req }) => {
       update: {
         name,
         size: file.size,
-        contentType: file.type,
+        contentType: fileType?.mime || file.type,
         storageType: "file",
         url: `${process.env.NEXT_PUBLIC_CDN_BASE_URL}/${path}`,
       },
@@ -145,7 +144,7 @@ export const POST = withSecretKey(async ({ team, req }) => {
         team: { connect: { id: team.id } },
         storageType: "file",
         size: file.size,
-        contentType: file.type,
+        contentType: fileType?.mime || file.type,
         url: `${process.env.NEXT_PUBLIC_CDN_BASE_URL}/${path}`,
       },
     });
