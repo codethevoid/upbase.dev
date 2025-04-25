@@ -35,7 +35,11 @@ export const POST = withSecretKey(async ({ team, req }) => {
       return restashError("A valid file is required", 400);
     }
 
-    const name = formData.get("name")?.toString() || file.name || randomBytes(8).toString("hex");
+    const isFile = file instanceof File;
+    let name = formData.get("name")?.toString();
+    if (!name) {
+      name = isFile ? file.name : `${randomBytes(8).toString("hex")}`;
+    }
     let path = formData.get("path")?.toString() || "";
 
     if (file.size > 4 * 1024 * 1024) {
