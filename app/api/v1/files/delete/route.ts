@@ -3,7 +3,7 @@ import { restashError } from "@/lib/utils/restash-error";
 import prisma from "@/db/prisma";
 import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { s3Client } from "@/lib/s3/client";
-import { restashResponse } from "@/lib/utils/restash-response";
+import { NextResponse } from "next/server";
 
 export const DELETE = withSecretKey(async ({ req, team }) => {
   try {
@@ -37,7 +37,7 @@ export const DELETE = withSecretKey(async ({ req, team }) => {
     // Delete the object from the database
     await prisma.storageObject.delete({ where: { id: object.id } });
 
-    return restashResponse("Object deleted", 200);
+    return NextResponse.json({ deleted: true, file: object.id });
   } catch (e) {
     console.error(e);
     return restashError("Failed to delete object", 500);
