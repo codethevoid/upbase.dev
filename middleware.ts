@@ -10,7 +10,10 @@ export const middleware = async (req: NextRequest) => {
 
   if (host === "api.restash.io") {
     // rewrite to the API route
-    return NextResponse.rewrite(new URL(`/api${path}`, req.url));
+    const searchParams = req.nextUrl.searchParams;
+    const searchParamsString = searchParams.toString() === "" ? "" : `?${searchParams.toString()}`;
+    const fullPath = `${path === "/" ? "" : path}${searchParamsString}`;
+    return NextResponse.rewrite(new URL(`/api${fullPath}`, req.url));
   }
 
   if (protectedRoutes.find((p) => path.startsWith(p))) {
