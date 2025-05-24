@@ -36,7 +36,7 @@ export const Hero = () => {
           </div>
         </div>
         <div className="relative left-0 order-1 md:left-6 md:order-2">
-          <div className="mx-auto max-w-[300px] md:max-w-full">
+          <div className="mx-auto max-w-[260px] md:max-w-full">
             <ThemedGlobe />
           </div>
         </div>
