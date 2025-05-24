@@ -2,6 +2,7 @@ import { Instrument_Sans } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/app/providers";
 import { constructMetadata } from "@/utils/metadata";
+import { Analytics } from "@vercel/analytics/next";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -29,6 +30,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${instrument.className} antialiased`}>
         <Providers>{children}</Providers>
+        <Analytics />
       </body>
     </html>
   );
