@@ -5,8 +5,9 @@ const robots = (): MetadataRoute.Robots => {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/api-keys", "/profile", "/settings", "/storage"],
+      disallow: ["/api-keys/*", "/profile/*", "/settings/*", "/storage/*"],
     },
+    sitemap: "https://restash.io/sitemap.xml",
   };
 };
 
