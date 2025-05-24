@@ -1,7 +1,7 @@
 import { Dispatch, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { FileWithPath } from "@/types";
-import { FREE_PLAN_FILE_SIZE_LIMIT } from "@/lib/utils/limits";
+import { FREE_PLAN_FILE_SIZE_LIMIT } from "@/utils/limits";
 import { toast } from "sonner";
 
 export const Dropzone = ({ setFiles }: { setFiles: Dispatch<FileWithPath[]> }) => {

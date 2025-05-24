@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Card } from "@/components/ui/card";
-import { formatBytes } from "@/lib/utils/format-bytes";
+import { formatBytes } from "@/utils/format-bytes";
 import { toast } from "sonner";
 import {
   Dialog,

@@ -1,7 +1,7 @@
 import { withWebApp } from "@/lib/auth/with-web-app";
-import { restashError } from "@/lib/utils/restash-error";
+import { restashError } from "@/utils/restash-error";
 import prisma from "@/db/prisma";
-import { restashResponse } from "@/lib/utils/restash-response";
+import { restashResponse } from "@/utils/restash-response";
 
 export const PATCH = withWebApp(async ({ req, team }) => {
   try {

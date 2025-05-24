@@ -63,7 +63,7 @@ export const SidebarNav = () => {
     <Sidebar>
       <SidebarContent className="p-1">
         <SidebarHeader className="p-3 font-semibold">
-          <NextLink href="/storage">restash</NextLink>
+          <NextLink href="/storage">Restash</NextLink>
         </SidebarHeader>
         <SidebarGroup>
           <SidebarGroupContent>

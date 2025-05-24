@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { withWebApp } from "@/lib/auth/with-web-app";
 import { folderSchema } from "@/lib/zod";
 import prisma from "@/db/prisma";
-import { restashError } from "@/lib/utils/restash-error";
+import { restashError } from "@/utils/restash-error";
 
 type CreateFolderRequest = {
   name: string;

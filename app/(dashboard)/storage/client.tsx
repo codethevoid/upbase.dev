@@ -6,11 +6,11 @@ import { useSearchParams } from "next/navigation";
 import NextLink from "next/link";
 import { Card } from "@/components/ui/card";
 import { CodeXml, File, Folder, ImageIcon, Upload } from "lucide-react";
-import { formatBytes } from "@/lib/utils/format-bytes";
+import { formatBytes } from "@/utils/format-bytes";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { CreateFolderDialog } from "@/components/dialogs/create-folder";
-import { getFileType } from "@/lib/utils/get-file-type";
+import { getFileType } from "@/utils/get-file-type";
 
 // export type Sort = "newest" | "oldest" | "name_asc" | "name_desc" | "size_asc" | "size_desc";
 
@@ -47,9 +47,11 @@ export const StorageClient = () => {
               <span>Upload</span>
             </NextLink>
           </Button>
-          <Button size="sm" variant="outline">
-            <CodeXml />
-            <span>API</span>
+          <Button size="sm" variant="outline" asChild>
+            <a href="https://docs.restash.io" target={"_blank"}>
+              <CodeXml />
+              <span>API</span>
+            </a>
           </Button>
         </div>
       </div>

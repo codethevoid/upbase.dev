@@ -1,6 +1,5 @@
 "use client";
 
-import NextLink from "next/link";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Breadcrumbs } from "@/components/navigation/breadcrumbs";
 import { Suspense } from "react";
@@ -19,14 +18,15 @@ export const DashboardNav = () => {
           {/*<Button size="sm" variant="outline">*/}
           {/*  Feedback*/}
           {/*</Button>*/}
-          <NextLink
-            href="/"
-            className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-          >
-            Help
-          </NextLink>
+          {/*<NextLink*/}
+          {/*  href="/"*/}
+          {/*  className="text-muted-foreground hover:text-foreground text-sm transition-colors"*/}
+          {/*>*/}
+          {/*  Help*/}
+          {/*</NextLink>*/}
           <a
-            href="#"
+            href="https://docs.restash.io"
+            target="_blank"
             className="text-muted-foreground hover:text-foreground text-sm transition-colors"
           >
             Docs

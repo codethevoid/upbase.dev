@@ -1,5 +1,5 @@
 import { withSecretKey } from "@/lib/auth/with-secret-key";
-import { restashError } from "@/lib/utils/restash-error";
+import { restashError } from "@/utils/restash-error";
 import prisma from "@/db/prisma";
 import { NextResponse } from "next/server";
 

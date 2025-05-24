@@ -1,13 +1,13 @@
 import { withPublicKey } from "@/lib/auth/with-public-key";
-import { restashError } from "@/lib/utils/restash-error";
-import { FREE_PLAN_FILE_SIZE_LIMIT, FREE_PLAN_STORAGE_LIMIT } from "@/lib/utils/limits";
-import { formatBytes } from "@/lib/utils/format-bytes";
+import { restashError } from "@/utils/restash-error";
+import { FREE_PLAN_FILE_SIZE_LIMIT, FREE_PLAN_STORAGE_LIMIT } from "@/utils/limits";
+import { formatBytes } from "@/utils/format-bytes";
 import prisma from "@/db/prisma";
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
 import { s3Client } from "@/lib/s3/client";
 import { NextResponse } from "next/server";
 import { redis } from "@/lib/upstash/redis";
-import { nanoid } from "@/lib/utils/alphabet";
+import { nanoid } from "@/utils/alphabet";
 import { z } from "zod";
 import { createHmac } from "crypto";
 

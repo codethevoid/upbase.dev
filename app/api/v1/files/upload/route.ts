@@ -1,10 +1,10 @@
 // Server side route for uploading files up to 4MB (most uploads will take place on the client)
-import { restashError } from "@/lib/utils/restash-error";
+import { restashError } from "@/utils/restash-error";
 import { withSecretKey } from "@/lib/auth/with-secret-key";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { s3Client } from "@/lib/s3/client";
 import prisma from "@/db/prisma";
-import { FREE_PLAN_STORAGE_LIMIT } from "@/lib/utils/limits";
+import { FREE_PLAN_STORAGE_LIMIT } from "@/utils/limits";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { fileTypeFromBuffer } from "file-type";

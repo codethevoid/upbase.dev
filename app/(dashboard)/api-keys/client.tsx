@@ -17,9 +17,11 @@ export const ApiKeysClient = () => {
         <h1 className="text-2xl font-semibold">API Keys</h1>
         <div className="flex items-center gap-2">
           <CreateApiKeyDialog />
-          <Button size="sm" variant="outline">
-            <CodeXml />
-            <span>API</span>
+          <Button size="sm" variant="outline" asChild>
+            <a href="https://docs.restash.io/sdks/api-keys" target="_blank">
+              <CodeXml />
+              <span>API</span>
+            </a>
           </Button>
         </div>
       </div>
