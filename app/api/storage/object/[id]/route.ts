@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { withWebApp } from "@/lib/auth/with-web-app";
 import prisma from "@/db/prisma";
-import { restashError } from "@/lib/utils/restash-error";
+import { restashError } from "@/utils/restash-error";
 
 export const GET = withWebApp(async ({ params, team }) => {
   const { id } = await params;

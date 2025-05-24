@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
 import { Instrument_Sans } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/app/providers";
+import { constructMetadata } from "@/utils/metadata";
+import { Analytics } from "@vercel/analytics/next";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -18,9 +19,7 @@ const instrument = Instrument_Sans({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Restash - Global Storage for Developers",
-};
+export const metadata = constructMetadata({});
 
 export default function RootLayout({
   children,
@@ -31,6 +30,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${instrument.className} antialiased`}>
         <Providers>{children}</Providers>
+        <Analytics />
       </body>
     </html>
   );

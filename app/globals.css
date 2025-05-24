@@ -1,7 +1,14 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@plugin "@tailwindcss/typography";
+
 @custom-variant dark (&:is(.dark *));
+
+::selection {
+    color: oklch(70.5% 0.213 47.604);
+    background-color: oklch(0.209 0.057 36.716);
+}
 
 :root {
     --radius: 0.625rem;
@@ -121,3 +128,4 @@
         @apply bg-background text-foreground;
     }
 }
+

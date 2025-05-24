@@ -1,4 +1,4 @@
-import { restashError } from "@/lib/utils/restash-error";
+import { restashError } from "@/utils/restash-error";
 import { withPublicKey } from "@/lib/auth/with-public-key";
 import { redis } from "@/lib/upstash/redis";
 import { HeadObjectCommand } from "@aws-sdk/client-s3";

@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 import prisma from "@/db/prisma";
 import { s3Client } from "@/lib/s3/client";
-import { restashError } from "@/lib/utils/restash-error";
+import { restashError } from "@/utils/restash-error";
 
 export const DELETE = withWebApp(async ({ team, params }) => {
   try {

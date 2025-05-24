@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { withWebApp } from "@/lib/auth/with-web-app";
-import { restashError } from "@/lib/utils/restash-error";
+import { restashError } from "@/utils/restash-error";
 import prisma from "@/db/prisma";
 
 export const GET = withWebApp(async ({ team, params }) => {

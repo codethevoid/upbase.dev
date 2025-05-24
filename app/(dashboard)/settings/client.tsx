@@ -12,7 +12,7 @@ import { ButtonLoader } from "@/components/ui/button-loader";
 import { Button } from "@/components/ui/button";
 import { RestashErrorResponse } from "@/types";
 import { toast } from "sonner";
-import { formatBytes } from "@/lib/utils/format-bytes";
+import { formatBytes } from "@/utils/format-bytes";
 import {
   Dialog,
   DialogClose,
@@ -23,7 +23,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { FREE_PLAN_STORAGE_LIMIT } from "@/lib/utils/limits";
+import { FREE_PLAN_STORAGE_LIMIT } from "@/utils/limits";
 import { ExternalLink } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 

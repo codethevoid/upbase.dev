@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { withWebApp } from "@/lib/auth/with-web-app";
-import { restashError } from "@/lib/utils/restash-error";
+import { restashError } from "@/utils/restash-error";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { s3Client } from "@/lib/s3/client";
 import prisma from "@/db/prisma";
-import { FREE_PLAN_FILE_SIZE_LIMIT, FREE_PLAN_STORAGE_LIMIT } from "@/lib/utils/limits";
-import { formatBytes } from "@/lib/utils/format-bytes";
+import { FREE_PLAN_FILE_SIZE_LIMIT, FREE_PLAN_STORAGE_LIMIT } from "@/utils/limits";
+import { formatBytes } from "@/utils/format-bytes";
 
 type PresignedUrlsRequest = {
   files: {

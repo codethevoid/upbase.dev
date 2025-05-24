@@ -18,13 +18,13 @@ export const middleware = async (req: NextRequest) => {
 
   if (protectedRoutes.find((p) => path.startsWith(p))) {
     const token = await auth();
-    if (!token) return NextResponse.redirect(new URL("/login", req.url));
+    if (!token?.user) return NextResponse.redirect(new URL("/login", req.url));
     return NextResponse.next();
   }
 
   if (authRoutes.includes(path)) {
     const token = await auth();
-    if (token) return NextResponse.redirect(new URL("/storage", req.url));
+    if (token?.user) return NextResponse.redirect(new URL("/storage", req.url));
     return NextResponse.next();
   }
 

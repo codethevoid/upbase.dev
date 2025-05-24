@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { withWebApp } from "@/lib/auth/with-web-app";
-import { restashError } from "@/lib/utils/restash-error";
+import { restashError } from "@/utils/restash-error";
 import { apiKeySchema } from "@/lib/zod";
 import prisma from "@/db/prisma";
 

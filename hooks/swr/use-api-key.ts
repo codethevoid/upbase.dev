@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { fetcher } from "@/lib/utils/fetcher";
+import { fetcher } from "@/utils/fetcher";
 
 type UseApiKeyResponse = {
   id: string;
