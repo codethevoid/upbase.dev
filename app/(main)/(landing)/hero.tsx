@@ -18,8 +18,10 @@ export const Hero = () => {
             <br /> for developers
           </h1>
           <p className="text-muted-foreground mx-auto max-w-[300px] text-center text-base md:mx-0 md:max-w-full md:text-left lg:text-lg">
-            Restash is a global storage solution that allows you to store and retrieve data from
-            anywhere in the world.
+            {/*Restash is a global storage solution that allows you to store and distribute data*/}
+            {/*anywhere in the world.*/}
+            File storage that works where you need it. Skip the complex setup and get back to
+            building what matters.
           </p>
           <div className="flex flex-col gap-2 md:flex-row">
             <Button size="lg" asChild>
