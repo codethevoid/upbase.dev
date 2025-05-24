@@ -17,7 +17,7 @@ export const Hero = () => {
             Global storage
             <br /> for developers
           </h1>
-          <p className="text-muted-foreground text-center text-base md:text-left lg:text-lg">
+          <p className="text-muted-foreground mx-auto max-w-[300px] text-center text-base md:mx-0 md:max-w-full md:text-left lg:text-lg">
             Restash is a global storage solution that allows you to store and retrieve data from
             anywhere in the world.
           </p>
