@@ -3,6 +3,7 @@
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Breadcrumbs } from "@/components/navigation/breadcrumbs";
 import { Suspense } from "react";
+import { FeedbackPopover } from "@/components/popovers/feedback";
 
 export const DashboardNav = () => {
   return (
@@ -24,6 +25,7 @@ export const DashboardNav = () => {
           {/*>*/}
           {/*  Help*/}
           {/*</NextLink>*/}
+          <FeedbackPopover />
           <a
             href="https://docs.restash.io"
             target="_blank"
