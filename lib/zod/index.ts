@@ -23,3 +23,14 @@ export const apiKeySchema = z.object({
 });
 
 export type ApiKeySchema = z.infer<typeof apiKeySchema>;
+
+// feedback schema
+export const feedbackSchema = z.object({
+  message: z
+    .string()
+    .min(1, { message: "Please provide a feedback message" })
+    .max(500, { message: "Feedback message must be at most 500 characters long" }),
+  emotion: z.enum(["happy", "sad"]).optional(),
+});
+
+export type FeedbackSchema = z.infer<typeof feedbackSchema>;

@@ -13,7 +13,7 @@ type WithWebAppHandler = ({
 }: {
   req: NextRequest;
   params: Params["params"];
-  user?: { id: string; email: string };
+  user: { id: string; email: string };
   team: { id: string };
 }) => Promise<NextResponse>;
 

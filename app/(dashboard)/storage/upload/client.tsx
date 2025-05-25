@@ -125,9 +125,11 @@ export const UploadClient = () => {
         <div className="flex items-center justify-between gap-4">
           <h1 className="text-2xl font-semibold">Upload</h1>
           <div className="flex items-center gap-2">
-            <Button size="sm" variant="outline">
-              <CodeXml />
-              <span>API</span>
+            <Button size="sm" variant="outline" asChild>
+              <a href="https://docs.restash.io" target={"_blank"}>
+                <CodeXml />
+                <span>API</span>
+              </a>
             </Button>
           </div>
         </div>

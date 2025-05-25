@@ -47,7 +47,7 @@ export const StorageClient = () => {
               <span>Upload</span>
             </NextLink>
           </Button>
-          <Button size="sm" variant="outline" asChild>
+          <Button size="sm" variant="outline" asChild className="hidden md:inline-flex">
             <a href="https://docs.restash.io" target={"_blank"}>
               <CodeXml />
               <span>API</span>
