@@ -6,8 +6,13 @@
 @custom-variant dark (&:is(.dark *));
 
 ::selection {
-    color: oklch(70.5% 0.213 47.604);
-    background-color: oklch(0.209 0.057 36.716);
+    background: oklch(0.984 0.014 180.72);
+    color: oklch(0.6 0.118 184.704);
+}
+
+.dark ::selection {
+    background: oklch(0.25 0.046 192.524);
+    color: oklch(0.777 0.152 181.912);
 }
 
 :root {
