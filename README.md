@@ -1,3 +1,5 @@
 <p align="center">
-  <img width="200px" src="public/restash.svg" alt="Restash Logo">
+  <a href="https://restash.io">
+    <img width="200px" src="public/restash.svg" alt="Restash Logo">
+  </a>
 </p>
