@@ -1,2 +1,3 @@
-<img src="public/restash.svg" width="200" alt="Restash" />
-
+<p align="center">
+  <img width="200px" src="public/restash.svg" alt="Restash Logo">
+</p>
