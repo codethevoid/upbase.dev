@@ -1,1 +1,1 @@
-![image info](restash.svg)
+![image info](/public/restash.svg)
