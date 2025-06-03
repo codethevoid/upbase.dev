@@ -1,1 +1,1 @@
-![image info](/restash.svg)
+![image info](restash.svg)
