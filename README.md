@@ -11,5 +11,3 @@
     <br />
     <a href="https://restash.io"><strong>Learn more »</strong></a>
 </p>
-
-![GitHub stars](https://img.shields.io/github/restashio/restash)
