@@ -1,7 +1,10 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import NextLink from "next/link";
 import { ChevronRight } from "lucide-react";
 import { ThemedGlobe } from "@/components/magicui/themed-globe";
+import { track } from "@vercel/analytics";
 
 export const Hero = () => {
   return (
@@ -10,7 +13,7 @@ export const Hero = () => {
         <div className="order-2 space-y-5 md:order-1 md:space-y-6">
           <div className="mx-auto w-fit rounded-full bg-gradient-to-b from-orange-100 to-orange-500 md:mx-0 dark:from-orange-950">
             <span className="m-[1px] inline-flex items-center gap-1 rounded-full bg-gradient-to-b from-white to-white/80 px-2.5 py-1 text-sm whitespace-nowrap dark:from-black dark:to-black/80">
-              Currently in public beta
+              5GB free storage
             </span>
           </div>
           <h1 className="bg-gradient-to-b from-black to-zinc-600 bg-clip-text text-center text-4xl font-medium text-transparent md:text-left md:text-5xl lg:text-7xl dark:from-white dark:to-zinc-300">
@@ -24,12 +27,17 @@ export const Hero = () => {
             building what matters.
           </p>
           <div className="flex flex-col gap-2 md:flex-row">
-            <Button size="lg" asChild>
+            <Button size="lg" asChild onClick={() => track("Get started", { location: "hero" })}>
               <NextLink href="/register">
                 Get started <ChevronRight />
               </NextLink>
             </Button>
-            <Button variant="ghost" size="lg" asChild>
+            <Button
+              variant="ghost"
+              size="lg"
+              asChild
+              onClick={() => track("docs", { location: "hero" })}
+            >
               <a href="https://docs.restash.io" target={"_blank"}>
                 Documentation
                 <ChevronRight />

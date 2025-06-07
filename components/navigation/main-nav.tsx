@@ -4,6 +4,7 @@ import NextLink from "next/link";
 import { Button } from "@/components/ui/button";
 import { useToken } from "@/hooks/swr/use-token";
 import { ChevronRight } from "lucide-react";
+import { track } from "@vercel/analytics";
 
 export const MainNav = () => {
   const { token, isLoading } = useToken();
@@ -26,7 +27,7 @@ export const MainNav = () => {
               <Button asChild variant="ghost" size="sm">
                 <NextLink href={"/login"}>Sign in</NextLink>
               </Button>
-              <Button asChild size="sm">
+              <Button asChild size="sm" onClick={() => track("Get started", { location: "nav" })}>
                 <NextLink href={"/register"}>
                   Get started <ChevronRight />
                 </NextLink>
