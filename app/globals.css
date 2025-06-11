@@ -5,14 +5,27 @@
 
 @custom-variant dark (&:is(.dark *));
 
-::selection {
-    background: oklch(0.984 0.014 180.72);
-    color: oklch(0.6 0.118 184.704);
+@font-face {
+    font-family: "Operator Mono";
+    src: url("/OperatorMono-Book.otf") format("opentype"); /* Ensure the path is correct */
+    font-weight: normal;
+    font-style: normal;
 }
 
-.dark ::selection {
-    background: oklch(0.25 0.046 192.524);
-    color: oklch(0.777 0.152 181.912);
+@font-face {
+    font-family: "Operator Mono";
+    src: url("/OperatorMono-BookItalic.otf") format("opentype"); /* Ensure the path is correct */
+    font-weight: normal;
+    font-style: italic;
+}
+
+code, pre {
+    font-family: "Operator Mono", monospace;
+}
+
+::selection {
+    background: color-mix(in oklab, var(--color-teal-500) /* oklch(70.4% 0.14 182.503) */ 5%, transparent);
+    color: var(--color-teal-500);
 }
 
 :root {
@@ -51,7 +64,7 @@
 }
 
 .dark {
-    --background: oklch(0.141 0.005 285.823);
+    --background: oklch(0 0 0);
     --foreground: oklch(0.985 0 0);
     --card: oklch(0.21 0.006 285.885);
     --card-foreground: oklch(0.985 0 0);
@@ -134,3 +147,42 @@
     }
 }
 
+.cls-1 {
+    fill: #959596;
+}
+
+.cls-2 {
+    fill: #868686;
+}
+
+.cls-3 {
+    fill: #a5a5a5;
+}
+
+.cls-4 {
+    fill: url(#linear-gradient);
+}
+
+.cls-5 {
+    fill: #717172;
+}
+
+.cls-6 {
+    fill: #acacac;
+}
+
+.cls-7 {
+    fill: #cbcbcb;
+}
+
+.cls-8 {
+    fill: #a4a4a4;
+}
+
+.cls-9 {
+    fill: #7e7e7f;
+}
+
+.cls-10 {
+    fill: #7b7b7b;
+}
