@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import NextLink from "next/link";
 import { ChevronRight, Rocket } from "lucide-react";
-import { ThemedGlobe } from "@/components/magicui/themed-globe";
 import { track } from "@vercel/analytics";
 import { GodRays } from "@/components/ui/god-rays";
 
@@ -55,11 +54,11 @@ export const Hero = () => {
             </Button>
           </div>
         </div>
-        <div className="relative left-0 order-1 md:left-6 md:order-2">
-          <div className="mx-auto max-w-[260px] md:max-w-[500px]">
-            <ThemedGlobe />
-          </div>
-        </div>
+        {/*<div className="relative left-0 order-1 md:left-6 md:order-2">*/}
+        {/*  <div className="mx-auto max-w-[260px] md:max-w-[500px]">*/}
+        {/*    <ThemedGlobe />*/}
+        {/*  </div>*/}
+        {/*</div>*/}
       </div>
     </section>
   );
