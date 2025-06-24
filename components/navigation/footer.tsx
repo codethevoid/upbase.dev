@@ -5,8 +5,8 @@ import { track } from "@vercel/analytics";
 
 export const Footer = () => {
   return (
-    <footer className="px-6 py-6">
-      <div className="mx-auto flex max-w-screen-lg items-center justify-between">
+    <footer className="px-4 py-8 pt-7 pb-8 md:px-8">
+      <div className="mx-auto flex max-w-screen-xl items-center justify-between">
         <div className="flex space-x-3">
           <a
             href="https://github.com/restashio"

@@ -5,28 +5,18 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@font-face {
-    font-family: "Operator Mono";
-    src: url("/OperatorMono-Book.otf") format("opentype"); /* Ensure the path is correct */
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "Operator Mono";
-    src: url("/OperatorMono-BookItalic.otf") format("opentype"); /* Ensure the path is correct */
-    font-weight: normal;
-    font-style: italic;
-}
-
 code, pre {
-    font-family: "Operator Mono", monospace;
+    font-family: var(--font-geist-mono);
 }
 
-::selection {
-    background: color-mix(in oklab, var(--color-teal-500) /* oklch(70.4% 0.14 182.503) */ 5%, transparent);
-    color: var(--color-teal-500);
+code .string {
+    @apply text-green-500;
 }
+
+/*::selection {*/
+/*    background: color-mix(in oklab, var(--color-teal-500) !* oklch(70.4% 0.14 182.503) *! 5%, transparent);*/
+/*    color: var(--color-teal-500);*/
+/*}*/
 
 :root {
     --radius: 0.625rem;
@@ -97,7 +87,6 @@ code, pre {
     --sidebar-ring: oklch(0.552 0.016 285.938);
 }
 
-
 @theme inline {
     --radius-sm: calc(var(--radius) - 4px);
     --radius-md: calc(var(--radius) - 2px);
@@ -135,6 +124,15 @@ code, pre {
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-ring: var(--sidebar-ring);
     --text-smaller: 0.825rem;
+    --animate-ripple: ripple var(--duration, 2s) ease calc(var(--i, 0) * .2s) infinite;
+    @keyframes ripple {
+        0%, 100% {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        50% {
+            transform: translate(-50%, -50%) scale(0.9);
+        }
+    }
 }
 
 @layer base {
@@ -185,4 +183,70 @@ code, pre {
 
 .cls-10 {
     fill: #7b7b7b;
+}
+
+@keyframes rainbownight {
+    from {
+        background-position: 50% 50%, 50% 50%;
+    }
+    to {
+        background-position: 350% 50%, 350% 50%;
+    }
+}
+
+.rainbownight {
+    --stripes: repeating-linear-gradient(
+            100deg,
+            #fff 0%,
+            #fff 7%,
+            transparent 10%,
+            transparent 12%,
+            #fff 16%
+    );
+    --stripesDark: repeating-linear-gradient(
+            100deg,
+            #000 0%,
+            #000 7%,
+            transparent 10%,
+            transparent 12%,
+            #000 16%
+    );
+    --rainbow: repeating-linear-gradient(
+            100deg,
+            #60a5fa 10%,
+            #e879f9 15%,
+            #60a5fa 20%,
+            #5eead4 25%,
+            #60a5fa 30%
+    );
+    background-image: var(--stripes), var(--rainbow);
+    background-size: 300%, 200%;
+    background-position: 50% 50%,
+    50% 50%;
+
+    filter: invert(100%) opacity(60%);
+
+    mask-image: radial-gradient(ellipse at 100% 0%, black 40%, transparent 70%);
+
+    pointer-events: none;
+}
+
+.rainbownight::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--stripes), var(--rainbow);
+    background-size: 200%, 100%;
+    animation: rainbownight 60s linear infinite;
+    background-attachment: fixed;
+    mix-blend-mode: difference;
+}
+
+.dark .rainbownight {
+    background-image: var(--stripesDark), var(--rainbow);
+    filter: blur(10px) opacity(50%) saturate(200%);
+}
+
+.dark .rainbownight::after {
+    background-image: var(--stripesDark), var(--rainbow);
 }
