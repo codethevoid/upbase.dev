@@ -2,6 +2,7 @@
 
 import { COBEOptions } from "cobe";
 import { Globe } from "@/components/magicui/globe";
+import { useTheme } from "next-themes";
 
 const DARK_CONFIG: COBEOptions = {
   width: 800,
@@ -15,7 +16,7 @@ const DARK_CONFIG: COBEOptions = {
   mapSamples: 16000,
   mapBrightness: 1.2,
   baseColor: [0.4, 0.4, 0.4], // Changed to a dark gray color
-  markerColor: [251 / 255, 100 / 255, 21 / 255],
+  markerColor: [1, 1, 1],
   glowColor: [0.5, 0.5, 0.5], // Changed to a neutral gray glow
   markers: [
     { location: [14.5995, 120.9842], size: 0.03 },
@@ -43,7 +44,7 @@ const LIGHT_CONFIG: COBEOptions = {
   mapSamples: 16000,
   mapBrightness: 1.2,
   baseColor: [1, 1, 1],
-  markerColor: [251 / 255, 100 / 255, 21 / 255],
+  markerColor: [0, 0, 0],
   glowColor: [1, 1, 1],
   markers: [
     { location: [14.5995, 120.9842], size: 0.03 },
@@ -60,10 +61,7 @@ const LIGHT_CONFIG: COBEOptions = {
 };
 
 export const ThemedGlobe = () => {
-  return (
-    <>
-      <Globe className="hidden dark:block" config={DARK_CONFIG} />
-      <Globe className="block dark:hidden" config={LIGHT_CONFIG} />
-    </>
-  );
+  const { theme } = useTheme();
+
+  return <Globe config={theme === "light" ? LIGHT_CONFIG : DARK_CONFIG} />;
 };

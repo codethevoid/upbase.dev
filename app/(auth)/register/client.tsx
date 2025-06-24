@@ -60,7 +60,6 @@ export const RegisterClient = () => {
         return;
       }
 
-      // push to dashboard
       router.push("/storage");
     } catch (e) {
       console.error(e);

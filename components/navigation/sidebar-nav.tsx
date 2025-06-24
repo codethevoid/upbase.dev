@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useTheme } from "next-themes";
 import { signOut } from "next-auth/react";
+import { RestashIcon } from "@/components/icons/restash";
 
 const links = [
   {
@@ -63,7 +64,10 @@ export const SidebarNav = () => {
     <Sidebar>
       <SidebarContent className="p-1">
         <SidebarHeader className="p-3 font-semibold">
-          <NextLink href="/storage">Restash</NextLink>
+          <NextLink href={"/storage"} className={"flex items-center gap-2 font-medium"}>
+            <RestashIcon />
+            <span className="relative top-[1px]">Restash</span>
+          </NextLink>
         </SidebarHeader>
         <SidebarGroup>
           <SidebarGroupContent>
