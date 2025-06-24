@@ -1,39 +1,39 @@
 "use client";
 
 import NextLink from "next/link";
+import { RestashIcon } from "@/components/icons/restash";
 import { Button } from "@/components/ui/button";
-import { useToken } from "@/hooks/swr/use-token";
-import { ChevronRight } from "lucide-react";
+import { useScrollPosition } from "@/hooks/utils/use-scroll-position";
+import { cn } from "@/lib/utils";
 import { track } from "@vercel/analytics";
 
 export const MainNav = () => {
-  const { token, isLoading } = useToken();
-
+  const scrollPos = useScrollPosition();
   return (
-    <nav className={"px-6 py-2.5"}>
-      <div className={"mx-auto flex max-w-screen-lg items-center justify-between"}>
-        <NextLink href={"/"} className={"text-lg font-semibold"}>
-          Restash
+    <nav
+      className={cn(
+        "bg-background/50 sticky top-0 z-90 mx-auto w-full rounded-full border border-transparent px-4 backdrop-blur transition-all md:px-8",
+        scrollPos > 10 &&
+          "border-border top-3 w-[340px] px-4 shadow-xl md:w-[600px] md:px-4 dark:shadow-none",
+      )}
+    >
+      <div className="mx-auto flex max-w-screen-xl items-center justify-between py-3">
+        <NextLink href={"/"} className={"flex items-center gap-2 font-medium"}>
+          <RestashIcon />
+          <span className="relative top-[1px]">Restash</span>
         </NextLink>
-        <div className={"flex items-center gap-2"}>
-          {isLoading ? (
-            <div className="h-8" />
-          ) : token ? (
-            <Button size="sm" asChild>
-              <NextLink href={"/storage"}>Dashboard</NextLink>
-            </Button>
-          ) : (
-            <>
-              <Button asChild variant="ghost" size="sm">
-                <NextLink href={"/login"}>Sign in</NextLink>
-              </Button>
-              <Button asChild size="sm" onClick={() => track("Get started", { location: "nav" })}>
-                <NextLink href={"/register"}>
-                  Get started <ChevronRight />
-                </NextLink>
-              </Button>
-            </>
-          )}
+        <div className="flex items-center gap-2">
+          <Button variant="secondary" className="rounded-full" size="sm" asChild>
+            <NextLink href="/login">Log in</NextLink>
+          </Button>
+          <Button
+            className="rounded-full"
+            size="sm"
+            asChild
+            onClick={() => track("Sign up", { location: "main-nav" })}
+          >
+            <NextLink href="/register">Sign up</NextLink>
+          </Button>
         </div>
       </div>
     </nav>

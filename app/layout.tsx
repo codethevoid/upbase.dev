@@ -3,16 +3,18 @@ import "./globals.css";
 import { Providers } from "@/app/providers";
 import { constructMetadata } from "@/utils/metadata";
 import { Analytics } from "@vercel/analytics/next";
+import { Geist_Mono } from "next/font/google";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
 //   subsets: ["latin"],
 // });
 //
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 const instrument = Instrument_Sans({
   variable: "--font-instrument-sans",
@@ -28,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${instrument.className} antialiased`}>
+      <body className={`${instrument.className} ${geistMono.variable} antialiased`}>
         <Providers>{children}</Providers>
         <Analytics />
       </body>

@@ -14,7 +14,6 @@ import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { Separator } from "@/components/ui/separator";
 import { RestashErrorResponse } from "@/types";
-import { track } from "@vercel/analytics";
 
 const schema = z.object({
   email: z.string().email({ message: "Please enter a valid email" }),
@@ -61,8 +60,6 @@ export const RegisterClient = () => {
         return;
       }
 
-      // push to dashboard
-      track("Sign up");
       router.push("/storage");
     } catch (e) {
       console.error(e);
