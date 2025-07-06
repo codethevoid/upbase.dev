@@ -23,6 +23,7 @@ export const GET = withSecretKey(async ({ req, team }) => {
         key: true,
         url: true,
         contentType: true,
+        metadata: true,
       },
     });
 
