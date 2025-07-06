@@ -53,6 +53,7 @@ model StorageObject {
   contentType String?
   url         String?
   storageType StorageType
+  metadata    Json?
   team        Team        @relation(fields: [teamId], references: [id])
   teamId      String
   // bucket      Bucket?     @relation(fields: [bucketId], references: [id])

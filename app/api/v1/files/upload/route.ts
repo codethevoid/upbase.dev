@@ -18,6 +18,8 @@ const schema = z.object({
   path: z.string().max(200).optional(),
 });
 
+const metadataSchema = z.record(z.string().max(100), z.string().max(1000)).optional();
+
 type UploadRequest = {
   file: {
     name: string;
@@ -33,6 +35,21 @@ export const POST = withSecretKey(async ({ team, req }) => {
     const file = (formData.get("file") as File) || Blob;
     if (!(file instanceof Blob)) {
       return restashError("A valid file is required", 400);
+    }
+
+    const metadataString = formData.get("metadata");
+    let metadata = {};
+
+    if (metadataString && typeof metadataString === "string") {
+      try {
+        metadata = JSON.parse(metadataString);
+      } catch {
+        return restashError("Metadata is invalid", 400);
+      }
+      const parsedMetadata = metadataSchema.safeParse(metadata);
+      if (!parsedMetadata.success) {
+        return restashError("Metadata is invalid", 400);
+      }
     }
 
     const name = formData.get("name")?.toString() || file.name;
@@ -129,6 +146,8 @@ export const POST = withSecretKey(async ({ team, req }) => {
       }
     }
 
+    const hasMetadata = Object.keys(metadata).length > 0;
+
     const newFile = await prisma.storageObject.upsert({
       where: { key: path },
       update: {
@@ -137,6 +156,7 @@ export const POST = withSecretKey(async ({ team, req }) => {
         contentType: fileType?.mime || file.type,
         storageType: "file",
         url: `${process.env.NEXT_PUBLIC_CDN_BASE_URL}/${path}`,
+        ...(hasMetadata && { metadata }),
       },
       create: {
         name,
@@ -146,6 +166,7 @@ export const POST = withSecretKey(async ({ team, req }) => {
         size: file.size,
         contentType: fileType?.mime || file.type,
         url: `${process.env.NEXT_PUBLIC_CDN_BASE_URL}/${path}`,
+        ...(hasMetadata && { metadata }),
       },
     });
 
@@ -156,6 +177,7 @@ export const POST = withSecretKey(async ({ team, req }) => {
       name: newFile.name,
       size: newFile.size,
       contentType: newFile.contentType,
+      metadata: newFile.metadata || null,
     });
   } catch (e) {
     console.error(e);

@@ -29,13 +29,15 @@ export const POST = withPublicKey(async ({ team, req }) => {
       size,
       type,
       key,
-    }: {
+      metadata = {},
+    } = session as {
       teamId: string;
       name: string;
       size: number;
       type?: string;
       key: string;
-    } = session as { teamId: string; name: string; size: number; type?: string; key: string };
+      metadata: Record<string, string>;
+    };
 
     if (!teamId || !name || !size || !key) {
       return restashError("Invalid session data", 400);
@@ -97,12 +99,14 @@ export const POST = withPublicKey(async ({ team, req }) => {
         contentType: type,
         storageType: "file",
         url: `${process.env.NEXT_PUBLIC_CDN_BASE_URL}/${key}`,
+        ...(Object.keys(metadata)?.length > 0 && { metadata }),
       },
       create: {
         name,
         size,
         contentType: type,
         url: `${process.env.NEXT_PUBLIC_CDN_BASE_URL}/${key}`,
+        ...(Object.keys(metadata)?.length > 0 && { metadata }),
         key,
         storageType: "file",
         team: { connect: { id: teamId } },
@@ -116,6 +120,7 @@ export const POST = withPublicKey(async ({ team, req }) => {
       size: newFile.size,
       contentType: newFile.contentType,
       key: newFile.key,
+      metadata: newFile.metadata,
     });
   } catch (e) {
     console.error(e);
