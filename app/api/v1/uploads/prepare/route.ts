@@ -18,6 +18,8 @@ const schema = z.object({
   path: z.string().max(200).optional(),
 });
 
+const metadataSchema = z.record(z.string().max(100), z.string().max(1000)).optional();
+
 type GeneratePresignedUrlRequest = {
   file: {
     name: string;
@@ -25,20 +27,20 @@ type GeneratePresignedUrlRequest = {
     size: number;
     path?: string;
   };
+  metadata?: Record<string, string>;
   signature?: string;
   payload?: string;
 };
 
 export const POST = withPublicKey(async ({ team, req }) => {
   try {
-    const { file, signature, payload }: GeneratePresignedUrlRequest = await req.json();
+    const { file, signature, payload, metadata }: GeneratePresignedUrlRequest = await req.json();
     if (!file) {
       return restashError("File information is required", 400);
     }
 
     // verify signature if required
     if (team.requiresSignature) {
-      // TODO: verify signature
       if (!signature || !payload) {
         return restashError("Signature is required", 400);
       }
@@ -53,6 +55,13 @@ export const POST = withPublicKey(async ({ team, req }) => {
     const parsed = schema.safeParse(file);
     if (!parsed.success) {
       return restashError("File information is invalid", 400);
+    }
+
+    if (metadata) {
+      const metadataParsed = metadataSchema.safeParse(metadata);
+      if (!metadataParsed.success) {
+        return restashError("Metadata is invalid", 400);
+      }
     }
 
     let { path } = file;
@@ -123,6 +132,7 @@ export const POST = withPublicKey(async ({ team, req }) => {
         size: file.size,
         type: file.type,
         key: path,
+        ...(metadata && { metadata }),
       }),
       { ex: 3600 * 2 }, // 24 hours just in case the upload takes a long time
     );

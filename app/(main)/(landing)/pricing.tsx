@@ -21,7 +21,7 @@ export const Pricing = () => {
               Power your storage
             </h3>
             <div className="mx-auto sm:max-w-[550px]">
-              <p className="text-muted-foreground text-center">
+              <p className="text-muted-foreground text-center text-sm md:text-base">
                 Start with our free plan and upgrade as you grow
               </p>
             </div>

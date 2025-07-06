@@ -21,7 +21,7 @@ export const Cta = () => {
             Global storage
             <br /> for developers
           </h2>
-          <p className="text-muted-foreground mx-auto max-w-[440px] text-center text-base md:mx-0">
+          <p className="text-muted-foreground mx-auto max-w-[440px] text-center text-[0.95rem] md:mx-0 md:text-base">
             The storage layer that doesn’t slow you down. <br></br> Simple to integrate. Powerful
             when it counts.
           </p>
